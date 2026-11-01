@@ -1,0 +1,3264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weekly Ops Tracker</title>
+  
+  <!-- Inter Font from Google Fonts CDN -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       CSS VARIABLES & THEME SETUP
+       Supports auto-detection via prefers-color-scheme and manual override
+       Deep Teal Accent: #0f766e (light) / #14b8a6 (dark)
+       Brand Palette: Primary #1e74ff (bright blue), Secondary #003672 (navy)
+       ========================================================================== */
+    :root {
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      
+      /* Light theme tokens */
+      --bg-page: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-subtle: #f1f5f9;
+      --bg-alt-row: #f8fafc;
+      --bg-hover: #f1f5f9;
+      --border-color: #e2e8f0;
+      --border-strong: #cbd5e1;
+      
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --text-subtle: #94a3b8;
+      
+      --accent: #0f766e;
+      --accent-hover: #115e59;
+      --accent-subtle: #f0fdfa;
+      --accent-border: #99f6e4;
+      --accent-contrast: #ffffff;
+
+      --brand-primary: #1e74ff;
+      --brand-secondary: #003672;
+
+      --trend-positive: #16a34a;
+      --trend-positive-bg: #dcfce7;
+      --trend-negative: #dc2626;
+      --trend-negative-bg: #fee2e2;
+      --trend-neutral: #64748b;
+      --trend-neutral-bg: #f1f5f9;
+
+      --warning-amber: #b45309;
+      --warning-bg: #fef3c7;
+      --warning-border: #fcd34d;
+
+      --info-blue: #0369a1;
+      --info-bg: #e0f2fe;
+      --info-border: #bae6fd;
+
+      --chip-grey-bg: #f1f5f9;
+      --chip-grey-text: #475569;
+      --chip-amber-bg: #fef3c7;
+      --chip-amber-text: #92400e;
+      --chip-green-bg: #dcfce7;
+      --chip-green-text: #166534;
+      --chip-red-bg: #fee2e2;
+      --chip-red-text: #991b1b;
+
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-pill: 9999px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg-page: #0b0f17;
+        --bg-card: #131b2a;
+        --bg-subtle: #1e293b;
+        --bg-alt-row: #101726;
+        --bg-hover: #1e293b;
+        --border-color: #243044;
+        --border-strong: #334155;
+        
+        --text-main: #f8fafc;
+        --text-muted: #94a3b8;
+        --text-subtle: #64748b;
+        
+        --accent: #14b8a6;
+        --accent-hover: #2dd4bf;
+        --accent-subtle: rgba(20, 184, 166, 0.12);
+        --accent-border: rgba(20, 184, 166, 0.3);
+        --accent-contrast: #042f2e;
+
+        --brand-primary: #1e74ff;
+        --brand-secondary: #003672;
+
+        --trend-positive: #4ade80;
+        --trend-positive-bg: rgba(74, 222, 128, 0.15);
+        --trend-negative: #f87171;
+        --trend-negative-bg: rgba(248, 113, 113, 0.15);
+        --trend-neutral: #94a3b8;
+        --trend-neutral-bg: #1e293b;
+
+        --warning-amber: #fbbf24;
+        --warning-bg: rgba(251, 191, 36, 0.15);
+        --warning-border: rgba(251, 191, 36, 0.35);
+
+        --info-blue: #38bdf8;
+        --info-bg: rgba(56, 189, 248, 0.12);
+        --info-border: rgba(56, 189, 248, 0.3);
+
+        --chip-grey-bg: #1e293b;
+        --chip-grey-text: #cbd5e1;
+        --chip-amber-bg: rgba(245, 158, 11, 0.2);
+        --chip-amber-text: #fcd34d;
+        --chip-green-bg: rgba(34, 197, 94, 0.2);
+        --chip-green-text: #86efac;
+        --chip-red-bg: rgba(239, 68, 68, 0.2);
+        --chip-red-text: #fca5a5;
+
+        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    /* Manual theme overrides */
+    [data-theme="dark"] {
+      --bg-page: #0b0f17;
+      --bg-card: #131b2a;
+      --bg-subtle: #1e293b;
+      --bg-alt-row: #101726;
+      --bg-hover: #1e293b;
+      --border-color: #243044;
+      --border-strong: #334155;
+      
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-subtle: #64748b;
+      
+      --accent: #14b8a6;
+      --accent-hover: #2dd4bf;
+      --accent-subtle: rgba(20, 184, 166, 0.12);
+      --accent-border: rgba(20, 184, 166, 0.3);
+      --accent-contrast: #042f2e;
+
+      --brand-primary: #1e74ff;
+      --brand-secondary: #003672;
+
+      --trend-positive: #4ade80;
+      --trend-positive-bg: rgba(74, 222, 128, 0.15);
+      --trend-negative: #f87171;
+      --trend-negative-bg: rgba(248, 113, 113, 0.15);
+      --trend-neutral: #94a3b8;
+      --trend-neutral-bg: #1e293b;
+
+      --warning-amber: #fbbf24;
+      --warning-bg: rgba(251, 191, 36, 0.15);
+      --warning-border: rgba(251, 191, 36, 0.35);
+
+      --info-blue: #38bdf8;
+      --info-bg: rgba(56, 189, 248, 0.12);
+      --info-border: rgba(56, 189, 248, 0.3);
+
+      --chip-grey-bg: #1e293b;
+      --chip-grey-text: #cbd5e1;
+      --chip-amber-bg: rgba(245, 158, 11, 0.2);
+      --chip-amber-text: #fcd34d;
+      --chip-green-bg: rgba(34, 197, 94, 0.2);
+      --chip-green-text: #86efac;
+      --chip-red-bg: rgba(239, 68, 68, 0.2);
+      --chip-red-text: #fca5a5;
+
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+    }
+
+    [data-theme="light"] {
+      --bg-page: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-subtle: #f1f5f9;
+      --bg-alt-row: #f8fafc;
+      --bg-hover: #f1f5f9;
+      --border-color: #e2e8f0;
+      --border-strong: #cbd5e1;
+      
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --text-subtle: #94a3b8;
+      
+      --accent: #0f766e;
+      --accent-hover: #115e59;
+      --accent-subtle: #f0fdfa;
+      --accent-border: #99f6e4;
+      --accent-contrast: #ffffff;
+
+      --brand-primary: #1e74ff;
+      --brand-secondary: #003672;
+
+      --trend-positive: #16a34a;
+      --trend-positive-bg: #dcfce7;
+      --trend-negative: #dc2626;
+      --trend-negative-bg: #fee2e2;
+      --trend-neutral: #64748b;
+      --trend-neutral-bg: #f1f5f9;
+
+      --warning-amber: #b45309;
+      --warning-bg: #fef3c7;
+      --warning-border: #fcd34d;
+
+      --info-blue: #0369a1;
+      --info-bg: #e0f2fe;
+      --info-border: #bae6fd;
+
+      --chip-grey-bg: #f1f5f9;
+      --chip-grey-text: #475569;
+      --chip-amber-bg: #fef3c7;
+      --chip-amber-text: #92400e;
+      --chip-green-bg: #dcfce7;
+      --chip-green-text: #166534;
+      --chip-red-bg: #fee2e2;
+      --chip-red-text: #991b1b;
+
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    /* ==========================================================================
+       RESET & BASE TYPOGRAPHY
+       ========================================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      font-size: 13.5px;
+      line-height: 1.5;
+      color: var(--text-main);
+      background-color: var(--bg-page);
+      font-variant-numeric: tabular-nums;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      padding-bottom: 60px;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Buttons & Interactive */
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-card);
+      color: var(--text-main);
+      border-radius: var(--radius-sm);
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+
+    button:hover:not(:disabled) {
+      background-color: var(--bg-hover);
+      border-color: var(--border-strong);
+    }
+
+    button:active:not(:disabled) {
+      transform: translateY(1px);
+    }
+
+    button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    button.btn-primary {
+      background-color: var(--accent);
+      color: var(--accent-contrast);
+      border-color: var(--accent);
+    }
+
+    button.btn-primary:hover:not(:disabled) {
+      background-color: var(--accent-hover);
+      border-color: var(--accent-hover);
+    }
+
+    /* Outline Teal Button / Link */
+    .btn-outline-teal {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background-color: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: var(--radius-sm);
+      padding: 5px 11px;
+      font-size: 12.5px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+
+    .btn-outline-teal:hover {
+      background-color: var(--accent-subtle);
+      border-color: var(--accent-hover);
+      color: var(--accent-hover);
+    }
+
+    /* Platform & Channel Badges */
+    .platform-badge, .channel-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 9px;
+      border-radius: var(--radius-pill);
+      font-size: 11px;
+      font-weight: 600;
+      line-height: 1.35;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    /* ==========================================================================
+       HEADER & NAVIGATION BAR
+       ========================================================================== */
+    .header-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background-color: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
+    }
+
+    .header-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 0;
+    }
+
+    .header-title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-title {
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header-title::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 18px;
+      background-color: var(--accent);
+      border-radius: 2px;
+    }
+
+    .week-navigator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background-color: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      padding: 4px 6px;
+      border-radius: var(--radius-md);
+    }
+
+    .week-nav-btn {
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: var(--radius-sm);
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+    }
+
+    .week-label {
+      font-weight: 600;
+      font-size: 13.5px;
+      padding: 0 10px;
+      min-width: 175px;
+      text-align: center;
+      white-space: nowrap;
+      color: var(--text-main);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .last-loaded-text {
+      font-size: 12px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .theme-toggle-btn {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+
+    /* ==========================================================================
+       NOTIFICATIONS & BANNERS
+       ========================================================================== */
+    .banner-container {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .banner {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .banner-error {
+      background-color: var(--warning-bg);
+      color: var(--warning-amber);
+      border: 1px solid var(--warning-border);
+    }
+
+    .banner-info {
+      background-color: var(--info-bg);
+      color: var(--info-blue);
+      border: 1px solid var(--info-border);
+    }
+
+    .banner-neutral {
+      background-color: var(--bg-subtle);
+      color: var(--text-muted);
+      border: 1px solid var(--border-color);
+    }
+
+    .banner-icon {
+      font-size: 15px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .banner-content {
+      flex: 1;
+    }
+
+    .banner-content strong {
+      font-weight: 600;
+    }
+
+    .empty-state-box {
+      background-color: var(--bg-subtle);
+      border: 1px dashed var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 24px 20px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13.5px;
+      margin: 12px 0;
+    }
+
+    .carry-forward-notice {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--info-blue);
+      background-color: var(--info-bg);
+      border: 1px solid var(--info-border);
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 12px;
+    }
+
+    /* ==========================================================================
+       HIGHLIGHTS CALLOUT
+       ========================================================================== */
+    .highlights-section {
+      background-color: var(--bg-card);
+      border-left: 4px solid var(--accent);
+      border-radius: var(--radius-md);
+      border-top: 1px solid var(--border-color);
+      border-right: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-color);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .highlights-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .highlights-body {
+      font-size: 14px;
+      color: var(--text-main);
+      white-space: pre-wrap;
+      line-height: 1.6;
+    }
+
+    /* ==========================================================================
+       TOP 6 SUMMARY TILES
+       ========================================================================== */
+    .top-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .summary-tile {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: border-color 0.15s ease;
+    }
+
+    .summary-tile:hover {
+      border-color: var(--border-strong);
+    }
+
+    .summary-tile-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .summary-tile-value {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+
+    .summary-tile-trend {
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 500;
+    }
+
+    .trend-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 2px 7px;
+      border-radius: var(--radius-sm);
+      font-size: 11.5px;
+      font-weight: 600;
+    }
+
+    .trend-positive {
+      color: var(--trend-positive);
+      background-color: var(--trend-positive-bg);
+    }
+
+    .trend-negative {
+      color: var(--trend-negative);
+      background-color: var(--trend-negative-bg);
+    }
+
+    .trend-amber {
+      color: var(--warning-amber);
+      background-color: var(--warning-bg);
+    }
+
+    .trend-neutral {
+      color: var(--trend-neutral);
+      background-color: var(--trend-neutral-bg);
+    }
+
+    /* ==========================================================================
+       SECTION CARDS & INTERIOR TILES
+       ========================================================================== */
+    .ops-section {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 22px 24px;
+      margin-bottom: 28px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .section-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .mini-stat-card {
+      background-color: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mini-stat-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-bottom: 4px;
+    }
+
+    .mini-stat-val {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.2;
+    }
+
+    .mini-stat-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 3px;
+      line-height: 1.35;
+    }
+
+    /* Stage Badges List in Leads */
+    .stage-chips-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .stage-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid transparent;
+    }
+
+    .stage-pill-discussion {
+      background-color: var(--chip-grey-bg);
+      color: var(--chip-grey-text);
+      border-color: var(--border-color);
+    }
+
+    .stage-pill-proposal {
+      background-color: var(--chip-amber-bg);
+      color: var(--chip-amber-text);
+    }
+
+    .stage-pill-contract-signed {
+      background-color: var(--chip-green-bg);
+      color: var(--chip-green-text);
+    }
+
+    .stage-pill-dropped {
+      background-color: var(--chip-red-bg);
+      color: var(--chip-red-text);
+    }
+
+    /* ITI College Type Tag */
+    .college-type-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 1px 7px;
+      border-radius: var(--radius-sm);
+    }
+
+    .college-type-tag.government {
+      background-color: var(--bg-subtle);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+    }
+
+    .college-type-tag.private {
+      background-color: var(--chip-grey-bg);
+      color: var(--text-muted);
+      border: 1px solid var(--border-color);
+    }
+
+    .state-group-divider td {
+      border-top: 2px solid var(--border-strong) !important;
+    }
+
+    /* ==========================================================================
+       DATA TABLES
+       Dense, tabular figures, alternating rows, sticky column support
+       ========================================================================== */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      background-color: var(--bg-card);
+    }
+
+    table.ops-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    table.ops-table th {
+      background-color: var(--bg-subtle);
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-color);
+      border-right: 1px solid var(--border-color);
+    }
+
+    table.ops-table th:last-child {
+      border-right: none;
+    }
+
+    table.ops-table td {
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--border-color);
+      border-right: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+
+    table.ops-table td:last-child {
+      border-right: none;
+    }
+
+    table.ops-table tbody tr:nth-child(even) {
+      background-color: var(--bg-alt-row);
+    }
+
+    table.ops-table tbody tr:hover {
+      background-color: var(--bg-hover);
+    }
+
+    /* Total row styling */
+    table.ops-table tr.totals-row td {
+      background-color: var(--bg-subtle);
+      font-weight: 700;
+      color: var(--text-main);
+      border-top: 2px solid var(--border-strong);
+      border-bottom: none;
+    }
+
+    /* Alignment utilities */
+    .text-right {
+      text-align: right !important;
+    }
+
+    .text-center {
+      text-align: center !important;
+    }
+
+    .text-left {
+      text-align: left !important;
+    }
+
+    /* Soft warnings */
+    .soft-warning-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--warning-amber);
+      cursor: help;
+      font-size: 13px;
+      vertical-align: middle;
+    }
+
+    /* Leads table specific styles */
+    .row-dropped {
+      opacity: 0.6;
+      background-color: rgba(239, 68, 68, 0.03) !important;
+    }
+
+    .row-dropped td.lead-name {
+      text-decoration: line-through;
+    }
+
+    /* ==========================================================================
+       TOAST FEEDBACK
+       ========================================================================== */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background-color: var(--text-main);
+      color: var(--bg-card);
+      padding: 10px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: var(--shadow-md);
+      z-index: 1000;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      pointer-events: none;
+    }
+
+    #toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ==========================================================================
+       SPINNER / LOADING STATE
+       ========================================================================== */
+    .loading-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 20px;
+      color: var(--text-muted);
+    }
+
+    .spinner {
+      width: 38px;
+      height: 38px;
+      border: 3px solid var(--border-color);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 16px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .header-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .header-actions {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .week-navigator {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .week-label {
+        min-width: unset;
+        flex: 1;
+      }
+      .ops-section {
+        padding: 16px 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       HEADER BAR
+       ========================================================================== */ -->
+  <header class="header-bar">
+    <div class="container header-inner">
+      <div class="header-title-group">
+        <h1 class="header-title">Weekly Ops Tracker</h1>
+      </div>
+
+      <!-- Week Selector -->
+      <div class="week-navigator" id="week-navigator">
+        <button type="button" class="week-nav-btn" id="btn-prev-week" title="Previous Week (Older)">‹</button>
+        <span class="week-label" id="current-week-label">Loading weeks…</span>
+        <button type="button" class="week-nav-btn" id="btn-next-week" title="Next Week (Newer)">›</button>
+      </div>
+
+      <!-- Controls & Metadata -->
+      <div class="header-actions">
+        <span class="last-loaded-text" id="last-loaded-display">Waiting for data…</span>
+        <button type="button" id="btn-refresh" title="Refresh all sheets">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+          Refresh
+        </button>
+        <button type="button" class="btn-primary" id="btn-copy-summary" title="Copy bullet summary to clipboard">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          Copy summary
+        </button>
+        <button type="button" class="theme-toggle-btn" id="btn-theme-toggle" title="Toggle theme">
+          <span id="theme-btn-label">Auto</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       MAIN CONTENT CONTAINER
+       ========================================================================== -->
+  <main class="container">
+    <!-- Amber / Info Banners Container -->
+    <div id="banner-container" class="banner-container"></div>
+
+    <!-- Main dynamic dashboard area -->
+    <div id="dashboard-content">
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading operations data from Google Sheets…</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Toast Notification Feedback -->
+  <div id="toast">Summary copied to clipboard</div>
+
+  <!-- ==========================================================================
+       APPLICATION SCRIPTS
+       All pure vanilla JS. No frameworks or external libraries.
+       ========================================================================== -->
+  <script>
+    /* ==========================================================================
+       1. CONFIG BLOCK & CSV SCHEMAS
+       Published Google Sheet CSV URLs. Replace with real links when ready.
+       Expected columns across all 9 operational sources:
+       - WEEKS: week_start, highlights, iti_sheet_link
+       - ITI: week_start, state, college_type, colleges_in_state, email_sent, email_delivered, email_read, email_responded, wa_sent, wa_delivered, wa_read, wa_responded
+       - WA_CAMPAIGNS: week_start, campaign, client, recruiter, contacts, delivered, read, applications, selections, joined, first_month_payroll
+       - COMMUNITY: week_start, region, jobs_posted, members_added, members_total, growth_reason
+       - META_ADS: week_start, campaign, client, spend, impressions, calls, selections, joined
+       - SOCIAL: week_start, person, platform, posts, impressions, followers_gained, followers_now
+       - OTHER_ACTIVITIES: week_start, activity_name, activity_type, platform, description, reach, cost, outcome, notes
+       - LEADS: week_start, prospect, stage, channel, expected_revenue, expected_gp, notes
+       - ROI: week_start, activity, category, cost, outcome_description, outcome_value, outcome_unit, roi_percent, notes
+       ========================================================================== */
+    const CSV_SOURCES = {
+      WEEKS:            'https://docs.google.com/spreadsheets/d/e/2PACX-1vTeA5QD_djzzISx3_y-Il_9aZbGxW5txAt0j6QpRGiTvCv9TCzUYJ_vWSfAnLqTiA/pub?gid=1226628313&single=true&output=csv',
+      ITI:              'https://docs.google.com/spreadsheets/d/e/2PACX-1vTeA5QD_djzzISx3_y-Il_9aZbGxW5txAt0j6QpRGiTvCv9TCzUYJ_vWSfAnLqTiA/pub?gid=790524847&single=true&output=csv',
+      WA_CAMPAIGNS:     'https://docs.google.com/spreadsheets/d/e/2PACX-1vTeA5QD_djzzISx3_y-Il_9aZbGxW5txAt0j6QpRGiTvCv9TCzUYJ_vWSfAnLqTiA/pub?gid=1301631895&single=true&output=csv',
+      COMMUNITY:        'https://docs.google.com/spreadsheets/d/e/2PACX-1vTeA5QD_djzzISx3_y-Il_9aZbGxW5txAt0j6QpRGiTvCv9TCzUYJ_vWSfAnLqTiA/pub?gid=1576966029&single=true&output=csv',
+      META_ADS:         'https://docs.google.com/spreadsheets/d/e/2PACX-1vTeA5QD_djzzISx3_y-Il_9aZbGxW5txAt0j6QpRGiTvCv9TCzUYJ_vWSfAnLqTiA/pub?gid=1596621551&single=true&output=csv',
+      SOCIAL:           'https://docs.google.com/spreadsheets/d/e/2PACX-1vTeA5QD_djzzISx3_y-Il_9aZbGxW5txAt0j6QpRGiTvCv9TCzUYJ_vWSfAnLqTiA/pub?gid=1782721213&single=true&output=csv',
+      OTHER_ACTIVITIES: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTeA5QD_djzzISx3_y-Il_9aZbGxW5txAt0j6QpRGiTvCv9TCzUYJ_vWSfAnLqTiA/pub?gid=1389572387&single=true&output=csv',
+      LEADS:            'https://docs.google.com/spreadsheets/d/e/2PACX-1vTeA5QD_djzzISx3_y-Il_9aZbGxW5txAt0j6QpRGiTvCv9TCzUYJ_vWSfAnLqTiA/pub?gid=1845083453&single=true&output=csv',
+      ROI:              'https://docs.google.com/spreadsheets/d/e/2PACX-1vTeA5QD_djzzISx3_y-Il_9aZbGxW5txAt0j6QpRGiTvCv9TCzUYJ_vWSfAnLqTiA/pub?gid=431020805&single=true&output=csv',
+    };
+
+    /* ==========================================================================
+       MOCK SAMPLE DATASET
+       High-fidelity fallback data covering all 9 operational tabs with all new schema columns.
+       Automatically offered if CSV_SOURCES are unconfigured or fail to load.
+       ========================================================================== */
+    const DEMO_FALLBACK_DATA = {
+      WEEKS: [
+        { week_start: '2026-10-26', highlights: 'Record recruitment joiners across Western logistics hubs. Initiated Q4 ITI partnerships in Maharashtra & Gujarat. Signed Enterprise pilot agreement with Apex Retail for 45 FTEs. Meta ad conversion improved to 13.4%.', iti_sheet_link: 'https://example.com/iti-detail' },
+        { week_start: '2026-10-19', highlights: 'Expanded North community WhatsApp groups to 12k members. Commenced campus drives across 14 colleges. First closed proposal in Manufacturing vertical.', iti_sheet_link: '' },
+        { week_start: '2026-10-12', highlights: 'Integrated new automated WhatsApp qualification flows. Social impressions reached peak of 115k driven by founder tech breakdown video.', iti_sheet_link: '' },
+        { week_start: '2026-10-05', highlights: 'Met with State Skill Development mission directors. Finalized 3 client proposals for festive supply chain surge.', iti_sheet_link: '' },
+        { week_start: '2026-09-28', highlights: 'Quarterly review completed. Kicked off high-volume recruitment sprints for FMCG distribution clients.', iti_sheet_link: '' },
+        { week_start: '2026-09-21', highlights: 'Early planning and regional group segmentation initiated for East and Central chapters.', iti_sheet_link: '' }
+      ],
+      ITI: [
+        // 2026-10-26: Maharashtra & Gujarat split into Government & Private with Responded metrics
+        { week_start: '2026-10-26', state: 'Maharashtra', college_type: 'Government', colleges_in_state: '32', email_sent: '800', email_delivered: '760', email_read: '480', email_responded: '125', wa_sent: '700', wa_delivered: '680', wa_read: '520', wa_responded: '160' },
+        { week_start: '2026-10-26', state: 'Maharashtra', college_type: 'Private', colleges_in_state: '16', email_sent: '450', email_delivered: '420', email_read: '260', email_responded: '68', wa_sent: '400', wa_delivered: '380', wa_read: '300', wa_responded: '95' },
+        { week_start: '2026-10-26', state: 'Gujarat', college_type: 'Government', colleges_in_state: '22', email_sent: '550', email_delivered: '530', email_read: '320', email_responded: '85', wa_sent: '500', wa_delivered: '490', wa_read: '390', wa_responded: '120' },
+        { week_start: '2026-10-26', state: 'Gujarat', college_type: 'Private', colleges_in_state: '14', email_sent: '300', email_delivered: '290', email_read: '170', email_responded: '45', wa_sent: '300', wa_delivered: '290', wa_read: '220', wa_responded: '70' },
+        // 2026-10-19: Maharashtra & Gujarat split into Government & Private
+        { week_start: '2026-10-19', state: 'Maharashtra', college_type: 'Government', colleges_in_state: '32', email_sent: '720', email_delivered: '670', email_read: '440', email_responded: '110', wa_sent: '650', wa_delivered: '620', wa_read: '470', wa_responded: '145' },
+        { week_start: '2026-10-19', state: 'Maharashtra', college_type: 'Private', colleges_in_state: '16', email_sent: '380', email_delivered: '350', email_read: '240', email_responded: '60', wa_sent: '350', wa_delivered: '330', wa_read: '250', wa_responded: '80' },
+        { week_start: '2026-10-19', state: 'Gujarat', college_type: 'Government', colleges_in_state: '22', email_sent: '500', email_delivered: '480', email_read: '280', email_responded: '75', wa_sent: '460', wa_delivered: '440', wa_read: '340', wa_responded: '105' },
+        { week_start: '2026-10-19', state: 'Gujarat', college_type: 'Private', colleges_in_state: '14', email_sent: '280', email_delivered: '260', email_read: '140', email_responded: '38', wa_sent: '260', wa_delivered: '250', wa_read: '190', wa_responded: '58' },
+        // Earlier weeks
+        { week_start: '2026-10-12', state: 'Karnataka', college_type: 'Government', colleges_in_state: '28', email_sent: '550', email_delivered: '520', email_read: '330', email_responded: '82', wa_sent: '500', wa_delivered: '480', wa_read: '390', wa_responded: '118' },
+        { week_start: '2026-10-12', state: 'Karnataka', college_type: 'Private', colleges_in_state: '14', email_sent: '250', email_delivered: '240', email_read: '150', email_responded: '38', wa_sent: '250', wa_delivered: '240', wa_read: '200', wa_responded: '62' },
+        { week_start: '2026-10-05', state: 'Tamil Nadu', college_type: 'Government', colleges_in_state: '35', email_sent: '800', email_delivered: '760', email_read: '500', email_responded: '130', wa_sent: '720', wa_delivered: '690', wa_read: '530', wa_responded: '165' },
+        { week_start: '2026-10-05', state: 'Tamil Nadu', college_type: 'Private', colleges_in_state: '20', email_sent: '400', email_delivered: '380', email_read: '250', email_responded: '65', wa_sent: '380', wa_delivered: '360', wa_read: '280', wa_responded: '88' },
+        { week_start: '2026-09-28', state: 'Uttar Pradesh', college_type: 'Government', colleges_in_state: '45', email_sent: '1000', email_delivered: '940', email_read: '550', email_responded: '140', wa_sent: '920', wa_delivered: '870', wa_read: '620', wa_responded: '190' },
+        { week_start: '2026-09-28', state: 'Uttar Pradesh', college_type: 'Private', colleges_in_state: '20', email_sent: '500', email_delivered: '470', email_read: '270', email_responded: '70', wa_sent: '480', wa_delivered: '450', wa_read: '320', wa_responded: '98' },
+        { week_start: '2026-09-21', state: 'Maharashtra', college_type: 'Government', colleges_in_state: '30', email_sent: '650', email_delivered: '610', email_read: '380', email_responded: '95', wa_sent: '600', wa_delivered: '560', wa_read: '420', wa_responded: '130' },
+        { week_start: '2026-09-21', state: 'Maharashtra', college_type: 'Private', colleges_in_state: '15', email_sent: '300', email_delivered: '290', email_read: '180', email_responded: '46', wa_sent: '280', wa_delivered: '270', wa_read: '200', wa_responded: '60' }
+      ],
+      WA_CAMPAIGNS: [
+        { week_start: '2026-10-26', campaign: 'BlinkLogistics Picker Drive', client: 'BlinkLogistics', recruiter: 'Ankit Sharma', contacts: '4500', delivered: '4280', read: '3410', applications: '820', selections: '185', joined: '142', first_month_payroll: '1704000' },
+        { week_start: '2026-10-26', campaign: 'Apex Distribution Van Sorters', client: 'Apex Retail', recruiter: 'Pooja V.', contacts: '3800', delivered: '3650', read: '2980', applications: '710', selections: '150', joined: '115', first_month_payroll: '1380000' },
+        { week_start: '2026-10-26', campaign: 'SwiftCart Night Shift Packers', client: 'SwiftCart Ltd', recruiter: 'Rahul Menon', contacts: '5200', delivered: '4980', read: '4120', applications: '1050', selections: '240', joined: '190', first_month_payroll: '2280000' },
+        { week_start: '2026-10-26', campaign: 'Zeno Assembly Operators', client: 'Zeno Manufacturing', recruiter: 'Ankit Sharma', contacts: '2400', delivered: '2290', read: '1750', applications: '430', selections: '92', joined: '68', first_month_payroll: '816000' },
+        { week_start: '2026-10-19', campaign: 'BlinkLogistics Picker Drive', client: 'BlinkLogistics', recruiter: 'Ankit Sharma', contacts: '4100', delivered: '3890', read: '3100', applications: '740', selections: '165', joined: '120', first_month_payroll: '1440000' },
+        { week_start: '2026-10-19', campaign: 'Apex Retail Store Staff', client: 'Apex Retail', recruiter: 'Pooja V.', contacts: '3200', delivered: '3050', read: '2420', applications: '590', selections: '125', joined: '92', first_month_payroll: '1104000' },
+        { week_start: '2026-10-12', campaign: 'SwiftCart City Hubs', client: 'SwiftCart Ltd', recruiter: 'Rahul Menon', contacts: '4600', delivered: '4400', read: '3580', applications: '890', selections: '195', joined: '150', first_month_payroll: '1800000' },
+        { week_start: '2026-10-05', campaign: 'Metro Line Maintenance', client: 'Urban Infra', recruiter: 'Neha S.', contacts: '3900', delivered: '3710', read: '2920', applications: '680', selections: '140', joined: '105', first_month_payroll: '1260000' },
+        { week_start: '2026-09-28', campaign: 'Q3 Ramp Up Logistics', client: 'LogiXpress', recruiter: 'Ankit Sharma', contacts: '3500', delivered: '3350', read: '2650', applications: '620', selections: '130', joined: '98', first_month_payroll: '1176000' },
+        { week_start: '2026-09-21', campaign: 'Festive Pilot Drive', client: 'BlinkLogistics', recruiter: 'Pooja V.', contacts: '3100', delivered: '2950', read: '2300', applications: '540', selections: '110', joined: '80', first_month_payroll: '960000' }
+      ],
+      COMMUNITY: [
+        { week_start: '2026-10-26', region: 'North', jobs_posted: '34', members_added: '1450', members_total: '12850', growth_reason: 'Delhi-NCR logistics job blitz & referral links' },
+        { week_start: '2026-10-26', region: 'West', jobs_posted: '42', members_added: '1820', members_total: '16400', growth_reason: 'Pune & Bhiwandi industrial job fair broadcast' },
+        { week_start: '2026-10-26', region: 'South', jobs_posted: '28', members_added: '980', members_total: '11200', growth_reason: 'Hosur & Sriperumbudur electronics manufacturing drive' },
+        { week_start: '2026-10-26', region: 'East', jobs_posted: '18', members_added: '620', members_total: '6800', growth_reason: 'Kolkata warehouse recruitment tie-up' },
+        { week_start: '2026-10-26', region: 'Central', jobs_posted: '15', members_added: '410', members_total: '4950', growth_reason: 'Indore FMCG depot openings' },
+        { week_start: '2026-10-19', region: 'North', jobs_posted: '30', members_added: '1150', members_total: '11400', growth_reason: 'Campus referrals' },
+        { week_start: '2026-10-19', region: 'West', jobs_posted: '36', members_added: '1420', members_total: '14580', growth_reason: 'Warehouse hiring' },
+        { week_start: '2026-10-12', region: 'South', jobs_posted: '25', members_added: '890', members_total: '10220', growth_reason: 'Hub expansion' },
+        { week_start: '2026-10-05', region: 'West', jobs_posted: '29', members_added: '1100', members_total: '13160', growth_reason: 'Referral contest' },
+        { week_start: '2026-09-28', region: 'North', jobs_posted: '26', members_added: '950', members_total: '10250', growth_reason: 'Festive onboarding' },
+        { week_start: '2026-09-21', region: 'Central', jobs_posted: '12', members_added: '380', members_total: '4540', growth_reason: 'Initial community setup' }
+      ],
+      META_ADS: [
+        { week_start: '2026-10-26', campaign: 'MH_Logistics_Recruit_Tier2', client: 'BlinkLogistics', spend: '78500', impressions: '412000', calls: '640', selections: '112', joined: '86' },
+        { week_start: '2026-10-26', campaign: 'BLR_Packers_Urgent_Hire', client: 'SwiftCart Ltd', spend: '64200', impressions: '345000', calls: '520', selections: '98', joined: '74' },
+        { week_start: '2026-10-26', campaign: 'NCR_Driver_Van_Sorters', client: 'Apex Retail', spend: '42000', impressions: '215000', calls: '310', selections: '54', joined: '42' },
+        { week_start: '2026-10-19', campaign: 'MH_Logistics_Recruit_Tier2', client: 'BlinkLogistics', spend: '72000', impressions: '375000', calls: '580', selections: '95', joined: '70' },
+        { week_start: '2026-10-19', campaign: 'BLR_Packers_Urgent_Hire', client: 'SwiftCart Ltd', spend: '58000', impressions: '310000', calls: '460', selections: '80', joined: '60' },
+        { week_start: '2026-10-12', campaign: 'NCR_Driver_Van_Sorters', client: 'Apex Retail', spend: '51000', impressions: '280000', calls: '420', selections: '72', joined: '55' },
+        { week_start: '2026-10-05', campaign: 'South_Assembly_Tech', client: 'Zeno Mfg', spend: '46000', impressions: '240000', calls: '380', selections: '65', joined: '48' },
+        { week_start: '2026-09-28', campaign: 'Festival_Delivery_Wave1', client: 'SwiftCart Ltd', spend: '68000', impressions: '350000', calls: '510', selections: '88', joined: '64' },
+        { week_start: '2026-09-21', campaign: 'Pilot_Logistics_MH', client: 'BlinkLogistics', spend: '45000', impressions: '220000', calls: '330', selections: '52', joined: '38' }
+      ],
+      SOCIAL: [
+        { week_start: '2026-10-26', person: 'Vikram Seth (CEO)', platform: 'LinkedIn', posts: '4', impressions: '78000', followers_gained: '920', followers_now: '24800' },
+        { week_start: '2026-10-26', person: 'Priya Iyer (Head Ops)', platform: 'LinkedIn', posts: '3', impressions: '34500', followers_gained: '410', followers_now: '11200' },
+        { week_start: '2026-10-26', person: 'Company Brand Page', platform: 'YouTube', posts: '2', impressions: '46000', followers_gained: '680', followers_now: '15400' },
+        { week_start: '2026-10-19', person: 'Vikram Seth (CEO)', platform: 'LinkedIn', posts: '3', impressions: '62000', followers_gained: '750', followers_now: '23880' },
+        { week_start: '2026-10-19', person: 'Priya Iyer (Head Ops)', platform: 'LinkedIn', posts: '3', impressions: '29000', followers_gained: '320', followers_now: '10790' },
+        { week_start: '2026-10-12', person: 'Vikram Seth (CEO)', platform: 'LinkedIn', posts: '4', impressions: '71000', followers_gained: '840', followers_now: '23130' },
+        { week_start: '2026-10-05', person: 'Vikram Seth (CEO)', platform: 'LinkedIn', posts: '3', impressions: '54000', followers_gained: '610', followers_now: '22290' },
+        { week_start: '2026-09-28', person: 'Priya Iyer (Head Ops)', platform: 'LinkedIn', posts: '2', impressions: '21000', followers_gained: '240', followers_now: '10470' },
+        { week_start: '2026-09-21', person: 'Vikram Seth (CEO)', platform: 'LinkedIn', posts: '3', impressions: '48000', followers_gained: '520', followers_now: '21680' }
+      ],
+      OTHER_ACTIVITIES: [
+        { week_start: '2026-10-26', activity_name: 'Pune Industrial Job Fair', activity_type: 'Job Fair', platform: 'Offline / Campus', description: 'Stall and spot interviews at Chakan industrial corridor', reach: '1850', cost: '35000', outcome: '64 applications', notes: 'Partnered with MIDC association' },
+        { week_start: '2026-10-26', activity_name: 'Logistics Career Reel Series', activity_type: 'Influencer Campaign', platform: 'Instagram', description: 'Collab reels with @worker_vibes and regional creators', reach: '48000', cost: '25000', outcome: '310 link clicks, 45 candidates', notes: 'High engagement in Tier 2 MH' },
+        { week_start: '2026-10-26', activity_name: 'NAPS Apprenticeship Drive', activity_type: 'NAPS Promotion', platform: 'Govt Portal & SMS', description: 'SMS broadcast to registered ITI apprentices', reach: '6200', cost: '12000', outcome: '92 registered', notes: 'Targeting electronics assemblers' },
+        { week_start: '2026-10-19', activity_name: 'Haryana Warehouse Walk-in', activity_type: 'Job Fair', platform: 'Offline', description: 'Drive at Manesar community center', reach: '1200', cost: '28000', outcome: '48 applications', notes: '18 selected on spot' },
+        { week_start: '2026-10-19', activity_name: 'Vocational Tech Creator Shoutout', activity_type: 'Influencer Campaign', platform: 'YouTube', description: 'Feature in weekly blue-collar jobs roundup', reach: '34000', cost: '18000', outcome: '215 visits, 38 candidates', notes: 'Good response from North belt' }
+      ],
+      LEADS: [
+        { week_start: '2026-10-26', prospect: 'Apex Retail Hyperlocal', stage: 'Contract signed', channel: 'LinkedIn', expected_revenue: '1850000', expected_gp: '480000', notes: '45 FTE contract finalized across Mumbai & Thane hubs' },
+        { week_start: '2026-10-26', prospect: 'Zomato Dark Stores North', stage: 'Proposal', channel: 'Floworks', expected_revenue: '2400000', expected_gp: '620000', notes: 'Proposal submitted for 80 pickers across Gurgaon' },
+        { week_start: '2026-10-26', prospect: 'Tata Consumer Warehouse', stage: 'Proposal', channel: 'Referral', expected_revenue: '1500000', expected_gp: '390000', notes: 'Commercial terms under review with procurement team' },
+        { week_start: '2026-10-26', prospect: 'Reliance Digital Depot', stage: 'Discussion', channel: 'Website', expected_revenue: '1200000', expected_gp: '300000', notes: 'Introductory call held with regional HR head' },
+        { week_start: '2026-10-26', prospect: 'QuickBite Food Deliveries', stage: 'Dropped', channel: 'Email', expected_revenue: '800000', expected_gp: '160000', notes: 'Budget cut; opted for temporary peer-to-peer contractors' },
+        { week_start: '2026-10-19', prospect: 'BlinkLogistics Wave 2', stage: 'Contract signed', channel: 'Referral', expected_revenue: '1600000', expected_gp: '420000', notes: 'Expansion into Pune sorting center' },
+        { week_start: '2026-10-19', prospect: 'Dunzo Merchant Stores', stage: 'Discussion', channel: 'Website', expected_revenue: '900000', expected_gp: '220000', notes: 'Initial scoping for seasonal backup workforce' },
+        { week_start: '2026-10-12', prospect: 'BigBasket South Hubs', stage: 'Contract signed', channel: 'LinkedIn', expected_revenue: '2100000', expected_gp: '550000', notes: 'Annual master staffing agreement signed' },
+        { week_start: '2026-10-05', prospect: 'UrbanCompany Cleaners', stage: 'Proposal', channel: 'Floworks', expected_revenue: '1400000', expected_gp: '360000', notes: 'Pilot scope submitted for Bangalore metro' },
+        { week_start: '2026-09-28', prospect: 'Shadowfax Courier Sort', stage: 'Contract signed', channel: 'LinkedIn', expected_revenue: '1750000', expected_gp: '440000', notes: 'Signed 6-month contract for festive peak' },
+        { week_start: '2026-09-21', prospect: 'Delhivery B2B Depot', stage: 'Discussion', channel: 'Email', expected_revenue: '1100000', expected_gp: '270000', notes: 'Follow-up on RFP documentation' }
+      ],
+      ROI: [
+        { week_start: '2026-10-26', activity: 'WhatsApp API Broadcasts', category: 'WhatsApp', cost: '42000', outcome_description: '142 joiners onboarded', outcome_value: '142', outcome_unit: 'joiners', roi_percent: '168', notes: 'Calculated at ₹800 GP per joiner placement' },
+        { week_start: '2026-10-26', activity: 'Meta / LinkedIn Ads', category: 'LinkedIn', cost: '184700', outcome_description: '86 joiners onboarded', outcome_value: '86', outcome_unit: 'joiners', roi_percent: '45', notes: 'Blended paid acquisition ROI' },
+        { week_start: '2026-10-26', activity: 'Influencer Creator Tie-ups', category: 'Instagram', cost: '25000', outcome_description: '45 candidates screened', outcome_value: '45', outcome_unit: 'applications', roi_percent: '82', notes: 'Lower cost per qualified lead' },
+        { week_start: '2026-10-26', activity: 'Chakan Job Fair', category: 'Offline', cost: '35000', outcome_description: '64 applications received', outcome_value: '64', outcome_unit: 'applications', roi_percent: '94', notes: 'High intent candidates' },
+        { week_start: '2026-10-19', activity: 'WhatsApp API Broadcasts', category: 'WhatsApp', cost: '38000', outcome_description: '120 joiners onboarded', outcome_value: '120', outcome_unit: 'joiners', roi_percent: '155', notes: 'Consistent conversion' },
+        { week_start: '2026-10-19', activity: 'Meta / LinkedIn Ads', category: 'LinkedIn', cost: '130000', outcome_description: '70 joiners onboarded', outcome_value: '70', outcome_unit: 'joiners', roi_percent: '40', notes: 'Slightly higher CPL in festive week' },
+        { week_start: '2026-10-19', activity: 'Manesar Walk-in Drive', category: 'Offline', cost: '28000', outcome_description: '48 applications received', outcome_value: '48', outcome_unit: 'applications', roi_percent: '75', notes: '18 spot selections' }
+      ]
+    };
+
+    /* ==========================================================================
+       GLOBAL STATE
+       ========================================================================== */
+    const state = {
+      data: {
+        WEEKS: [],
+        ITI: [],
+        WA_CAMPAIGNS: [],
+        COMMUNITY: [],
+        META_ADS: [],
+        SOCIAL: [],
+        OTHER_ACTIVITIES: [],
+        LEADS: [],
+        ROI: []
+      },
+      weeks: [],             // Sorted descending YYYY-MM-DD Monday strings
+      selectedWeek: null,    // Currently active Monday ISO string (YYYY-MM-DD)
+      lastLoadedAt: null,    // Timestamp string
+      errors: [],            // Array of failed source names
+      isDemoMode: false      // Whether demo data is actively loaded
+    };
+
+    /* ==========================================================================
+       2. CSV PARSER
+       Industrial-strength parser handling:
+       - Double-quoted cells with commas & embedded newlines
+       - Escaped quotes ("")
+       - Windows (\r\n) and Unix (\n) line endings
+       - Header normalization (lowercase, trimmed)
+       ========================================================================== */
+    function parseCSV(text) {
+      if (!text || typeof text !== 'string') return [];
+      const rows = [];
+      let currentRow = [];
+      let currentCell = '';
+      let insideQuotes = false;
+      let i = 0;
+      const len = text.length;
+
+      while (i < len) {
+        const char = text[i];
+        const nextChar = text[i + 1];
+
+        if (insideQuotes) {
+          if (char === '"') {
+            if (nextChar === '"') {
+              currentCell += '"';
+              i += 2;
+              continue;
+            } else {
+              insideQuotes = false;
+              i++;
+              continue;
+            }
+          } else {
+            currentCell += char;
+            i++;
+            continue;
+          }
+        } else {
+          if (char === '"') {
+            insideQuotes = true;
+            i++;
+            continue;
+          } else if (char === ',') {
+            currentRow.push(currentCell.trim());
+            currentCell = '';
+            i++;
+            continue;
+          } else if (char === '\r') {
+            if (nextChar === '\n') {
+              i++;
+            }
+            currentRow.push(currentCell.trim());
+            currentCell = '';
+            if (currentRow.length > 0 && currentRow.some(c => c !== '')) {
+              rows.push(currentRow);
+            }
+            currentRow = [];
+            i++;
+            continue;
+          } else if (char === '\n') {
+            currentRow.push(currentCell.trim());
+            currentCell = '';
+            if (currentRow.length > 0 && currentRow.some(c => c !== '')) {
+              rows.push(currentRow);
+            }
+            currentRow = [];
+            i++;
+            continue;
+          } else {
+            currentCell += char;
+            i++;
+            continue;
+          }
+        }
+      }
+
+      if (currentCell.length > 0 || currentRow.length > 0) {
+        currentRow.push(currentCell.trim());
+        if (currentRow.some(c => c !== '')) {
+          rows.push(currentRow);
+        }
+      }
+
+      if (rows.length === 0) return [];
+
+      // Normalize headers: lowercase and trimmed
+      const rawHeaders = rows[0];
+      const headers = rawHeaders.map(h => (h || '').toLowerCase().trim());
+
+      const result = [];
+      for (let r = 1; r < rows.length; r++) {
+        const row = rows[r];
+        if (row.length === 0 || row.every(val => val === '')) continue;
+        const obj = {};
+        for (let c = 0; c < headers.length; c++) {
+          const header = headers[c];
+          if (header) {
+            obj[header] = c < row.length ? row[c] : '';
+          }
+        }
+        result.push(obj);
+      }
+      return result;
+    }
+
+    /* ==========================================================================
+       3. DATE & WEEK LOGIC
+       - Parse YYYY-MM-DD or DD/MM/YYYY
+       - Standardize to Monday of that week in UTC to avoid local timezone drift
+       ========================================================================== */
+    function parseDateToMonday(str) {
+      if (!str) return null;
+      str = String(str).trim();
+      let y, m, d;
+
+      if (/^\d{4}[-/]\d{1,2}[-/]\d{1,2}/.test(str)) {
+        const parts = str.split(/[-/T ]/);
+        y = parseInt(parts[0], 10);
+        m = parseInt(parts[1], 10);
+        d = parseInt(parts[2], 10);
+      } else if (/^\d{1,2}[-/]\d{1,2}[-/]\d{2,4}/.test(str)) {
+        const parts = str.split(/[-/]/);
+        d = parseInt(parts[0], 10);
+        m = parseInt(parts[1], 10);
+        y = parseInt(parts[2], 10);
+        if (y < 100) y += 2000;
+      } else {
+        const parsed = new Date(str);
+        if (isNaN(parsed.getTime())) return null;
+        const istTime = new Date(parsed.getTime() + (330 + parsed.getTimezoneOffset()) * 60000);
+        y = istTime.getFullYear();
+        m = istTime.getMonth() + 1;
+        d = istTime.getDate();
+      }
+
+      if (!y || !m || !d || isNaN(y) || isNaN(m) || isNaN(d)) return null;
+
+      const dt = new Date(Date.UTC(y, m - 1, d));
+      const day = dt.getUTCDay();
+      const diffToMonday = (day + 6) % 7;
+      dt.setUTCDate(dt.getUTCDate() - diffToMonday);
+
+      const monY = dt.getUTCFullYear();
+      const monM = String(dt.getUTCMonth() + 1).padStart(2, '0');
+      const monD = String(dt.getUTCDate()).padStart(2, '0');
+      return `${monY}-${monM}-${monD}`;
+    }
+
+    const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    function formatWeekLabel(mondayStr) {
+      if (!mondayStr) return '–';
+      const parts = mondayStr.split('-');
+      if (parts.length < 3) return mondayStr;
+
+      const y = parseInt(parts[0], 10);
+      const m = parseInt(parts[1], 10);
+      const d = parseInt(parts[2], 10);
+
+      const mon = new Date(Date.UTC(y, m - 1, d));
+      const sun = new Date(Date.UTC(y, m - 1, d + 6));
+
+      const monD = mon.getUTCDate();
+      const monM = MONTH_NAMES[mon.getUTCMonth()];
+      const sunD = sun.getUTCDate();
+      const sunM = MONTH_NAMES[sun.getUTCMonth()];
+      const sunY = sun.getUTCFullYear();
+
+      if (mon.getUTCMonth() === sun.getUTCMonth() && mon.getUTCFullYear() === sun.getUTCFullYear()) {
+        return `${monD} – ${sunD} ${sunM} ${sunY}`;
+      } else {
+        return `${monD} ${monM} – ${sunD} ${sunM} ${sunY}`;
+      }
+    }
+
+    function formatCarryForwardDate(mondayStr) {
+      if (!mondayStr) return '';
+      const parts = mondayStr.split('-');
+      if (parts.length < 3) return mondayStr;
+      const y = parseInt(parts[0], 10);
+      const m = parseInt(parts[1], 10);
+      const d = parseInt(parts[2], 10);
+      const dt = new Date(Date.UTC(y, m - 1, d));
+      return `${dt.getUTCDate()} ${MONTH_NAMES[dt.getUTCMonth()]} ${dt.getUTCFullYear()}`;
+    }
+
+    /* ==========================================================================
+       4. NUMBER, CURRENCY & TEXT FORMATTERS (CHANGE 6: Accept N/A gracefully)
+       ========================================================================== */
+    function isNullLike(val) {
+      if (val === null || val === undefined) return true;
+      const s = String(val).trim().toLowerCase();
+      return (
+        s === '' ||
+        s === '-' ||
+        s === '–' ||
+        s === '—' ||
+        s === 'n/a' ||
+        s === 'na' ||
+        s === 'null' ||
+        s === 'none' ||
+        s === 'nil'
+      );
+    }
+
+    function parseNum(val) {
+      if (val === null || val === undefined) return null;
+      if (typeof val === 'number') return (isNaN(val) || !isFinite(val)) ? null : val;
+      const s = String(val).trim();
+      if (isNullLike(s)) return null;
+      const cleaned = s.replace(/[₹$,\s%]/g, '');
+      if (cleaned === '' || isNullLike(cleaned)) return null;
+      const n = parseFloat(cleaned);
+      return (isNaN(n) || !isFinite(n)) ? null : n;
+    }
+
+    function formatIndianNumber(num) {
+      if (num === null || num === undefined) return '–';
+      const n = typeof num === 'number' ? num : parseNum(num);
+      if (n === null || isNaN(n) || !isFinite(n)) return '–';
+
+      const isNegative = n < 0;
+      const absNum = Math.abs(n);
+      const parts = absNum.toString().split('.');
+      let intPart = parts[0];
+      const decPart = parts.length > 1 ? '.' + parts[1] : '';
+
+      if (intPart.length > 3) {
+        const lastThree = intPart.substring(intPart.length - 3);
+        const otherNumbers = intPart.substring(0, intPart.length - 3);
+        const formattedOther = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ',');
+        intPart = formattedOther + ',' + lastThree;
+      }
+      return (isNegative ? '-' : '') + intPart + decPart;
+    }
+
+    function formatCurrency(num, decimals = 0) {
+      if (num === null || num === undefined) return '–';
+      const n = typeof num === 'number' ? num : parseNum(num);
+      if (n === null || isNaN(n) || !isFinite(n)) return '–';
+
+      const isNegative = n < 0;
+      const absNum = Math.abs(n);
+      let fixedStr = decimals > 0 ? absNum.toFixed(decimals) : Math.round(absNum).toString();
+      const parts = fixedStr.split('.');
+      let intPart = parts[0];
+      const decPart = parts.length > 1 ? '.' + parts[1] : '';
+
+      if (intPart.length > 3) {
+        const lastThree = intPart.substring(intPart.length - 3);
+        const otherNumbers = intPart.substring(0, intPart.length - 3);
+        const formattedOther = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ',');
+        intPart = formattedOther + ',' + lastThree;
+      }
+      return (isNegative ? '-₹' : '₹') + intPart + decPart;
+    }
+
+    function formatPercent(numerator, denominator) {
+      if (numerator === null || denominator === null || numerator === undefined || denominator === undefined) return '–';
+      const num = typeof numerator === 'number' ? numerator : parseNum(numerator);
+      const den = typeof denominator === 'number' ? denominator : parseNum(denominator);
+      if (num === null || den === null || isNaN(num) || isNaN(den) || !isFinite(num) || !isFinite(den)) return '–';
+      if (den === 0) return '–';
+      const pct = (num / den) * 100;
+      if (isNaN(pct) || !isFinite(pct)) return '–';
+      return pct.toFixed(1) + '%';
+    }
+
+    function formatRawNum(val) {
+      if (isNullLike(val)) return '–';
+      const n = parseNum(val);
+      if (n === null) return '–';
+      return formatIndianNumber(n);
+    }
+
+    function formatRawCurrency(val, decimals = 0) {
+      if (isNullLike(val)) return '–';
+      const n = parseNum(val);
+      if (n === null) return '–';
+      return formatCurrency(n, decimals);
+    }
+
+    function formatText(val) {
+      if (isNullLike(val)) return '–';
+      return escapeHtml(String(val).trim());
+    }
+
+    function sumColumn(rows, key) {
+      if (!rows || rows.length === 0) return null;
+      let sum = 0;
+      let hasValid = false;
+      for (const r of rows) {
+        const val = parseNum(r[key]);
+        if (val !== null) {
+          sum += val;
+          hasValid = true;
+        }
+      }
+      return hasValid ? sum : null;
+    }
+
+    /* ==========================================================================
+       BRAND & BADGE RENDERERS (CHANGE 4 & 5)
+       Primary brand: #1e74ff (bright blue)
+       Secondary brand: #003672 (navy)
+       ========================================================================== */
+    function renderPlatformBadge(platform) {
+      if (isNullLike(platform)) return '–';
+      const p = String(platform).trim();
+      const lower = p.toLowerCase();
+
+      let bg = '#64748b';
+      let color = '#ffffff';
+
+      if (lower.includes('whatsapp') || lower.includes('wa')) {
+        bg = '#003672';
+        color = '#ffffff';
+      } else if (lower.includes('linkedin')) {
+        bg = '#003672';
+        color = '#ffffff';
+      } else if (lower.includes('instagram')) {
+        bg = '#1e74ff';
+        color = '#ffffff';
+      } else if (lower.includes('meta') || lower.includes('facebook') || lower.includes('fb')) {
+        bg = '#1e74ff';
+        color = '#ffffff';
+      } else if (lower.includes('youtube') || lower.includes('yt')) {
+        bg = '#1e74ff';
+        color = '#ffffff';
+      } else if (lower.includes('offline') || lower.includes('campus')) {
+        bg = '#64748b';
+        color = '#ffffff';
+      } else {
+        bg = 'var(--chip-grey-bg)';
+        color = 'var(--chip-grey-text)';
+      }
+
+      return `<span class="platform-badge" style="background-color: ${bg}; color: ${color};">${escapeHtml(p)}</span>`;
+    }
+
+    function renderChannelBadge(channel) {
+      if (isNullLike(channel)) return '–';
+      const ch = String(channel).trim();
+      const lower = ch.toLowerCase();
+
+      let bg = '#64748b';
+      let color = '#ffffff';
+
+      if (lower.includes('linkedin')) {
+        bg = '#003672';
+        color = '#ffffff';
+      } else if (lower.includes('flowork')) {
+        bg = '#1e74ff';
+        color = '#ffffff';
+      } else if (lower.includes('website') || lower.includes('web')) {
+        bg = 'var(--accent)';
+        color = 'var(--accent-contrast)';
+      } else if (lower.includes('referral') || lower.includes('ref')) {
+        bg = '#7c3aed';
+        color = '#ffffff';
+      } else if (lower.includes('email') || lower.includes('mail')) {
+        bg = '#64748b';
+        color = '#ffffff';
+      } else {
+        bg = 'var(--chip-grey-bg)';
+        color = 'var(--chip-grey-text)';
+      }
+
+      return `<span class="channel-badge" style="background-color: ${bg}; color: ${color};">${escapeHtml(ch)}</span>`;
+    }
+
+    /* ==========================================================================
+       5. DATA RETRIEVAL & NORMALIZATION
+       ========================================================================== */
+    async function loadAllSheets() {
+      state.errors = [];
+      const bannerContainer = document.getElementById('banner-container');
+      bannerContainer.innerHTML = '';
+
+      const isUnconfigured = Object.values(CSV_SOURCES).some(url => !url || url.includes('PASTE_YOUR_'));
+
+      if (isUnconfigured && !state.isDemoMode) {
+        bannerContainer.innerHTML = `
+          <div class="banner banner-error">
+            <span class="banner-icon">⚠</span>
+            <div class="banner-content">
+              <strong>Google Sheet CSV URLs not configured:</strong> The CSV_SOURCES at the top of this file contains placeholder URLs.
+              <div style="margin-top: 6px;">
+                <button type="button" class="btn-primary" id="btn-load-demo" style="font-size: 12px; padding: 4px 10px;">
+                  Load Sample Demo Data
+                </button>
+                <span style="font-size: 12px; margin-left: 8px; color: var(--text-muted);">
+                  or paste published Google Sheet CSV URLs into the script config.
+                </span>
+              </div>
+            </div>
+          </div>
+        `;
+
+        document.getElementById('btn-load-demo')?.addEventListener('click', () => {
+          activateDemoMode();
+        });
+
+        activateDemoMode(false);
+        return;
+      }
+
+      const keys = Object.keys(CSV_SOURCES);
+      const fetchPromises = keys.map(key => {
+        const url = CSV_SOURCES[key];
+        return fetch(url, { cache: 'no-store' })
+          .then(async res => {
+            if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+            return { key, text: await res.text() };
+          });
+      });
+
+      const results = await Promise.allSettled(fetchPromises);
+      let failedTabs = [];
+
+      results.forEach((res, index) => {
+        const key = keys[index];
+        if (res.status === 'fulfilled') {
+          try {
+            const parsedRows = parseCSV(res.value.text);
+            state.data[key] = parsedRows.map(row => {
+              const monday = parseDateToMonday(row.week_start);
+              return { ...row, _monday: monday };
+            });
+          } catch (err) {
+            console.error(`Error parsing CSV for ${key}:`, err);
+            failedTabs.push(key);
+            state.data[key] = [];
+          }
+        } else {
+          console.warn(`Failed to load ${key} from ${CSV_SOURCES[key]}:`, res.reason);
+          failedTabs.push(key);
+          state.data[key] = [];
+        }
+      });
+
+      if (failedTabs.length > 0) {
+        state.errors = failedTabs;
+        renderErrorBanners(failedTabs);
+      }
+
+      postLoadProcess();
+    }
+
+    function activateDemoMode(showNotice = true) {
+      state.isDemoMode = true;
+      const keys = Object.keys(DEMO_FALLBACK_DATA);
+      keys.forEach(k => {
+        state.data[k] = DEMO_FALLBACK_DATA[k].map(row => ({
+          ...row,
+          _monday: parseDateToMonday(row.week_start)
+        }));
+      });
+
+      if (showNotice) {
+        const bannerContainer = document.getElementById('banner-container');
+        bannerContainer.innerHTML = `
+          <div class="banner banner-info">
+            <span class="banner-icon">ℹ</span>
+            <div class="banner-content">
+              <strong>Previewing with interactive sample data:</strong> Showing operational data across all 9 operational tabs.
+            </div>
+          </div>
+        `;
+      }
+
+      postLoadProcess();
+    }
+
+    function renderErrorBanners(failedTabs) {
+      const bannerContainer = document.getElementById('banner-container');
+      const itemsHtml = failedTabs.map(tab => `<li>Failed to load <strong>${tab}</strong> data</li>`).join('');
+      bannerContainer.innerHTML += `
+        <div class="banner banner-error">
+          <span class="banner-icon">⚠</span>
+          <div class="banner-content">
+            <strong>Data Fetch Incomplete:</strong> The following Google Sheet CSV tabs could not be loaded:
+            <ul style="margin: 4px 0 6px 18px;">${itemsHtml}</ul>
+            <button type="button" class="btn-primary" id="btn-load-demo-fallback" style="font-size: 11.5px; padding: 4px 8px; margin-top: 4px;">
+              Load Sample Demo Data Instead
+            </button>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('btn-load-demo-fallback')?.addEventListener('click', () => {
+        activateDemoMode();
+      });
+    }
+
+    function postLoadProcess() {
+      const mondaySet = new Set();
+      Object.values(state.data).forEach(rows => {
+        if (Array.isArray(rows)) {
+          rows.forEach(r => {
+            if (r._monday) mondaySet.add(r._monday);
+          });
+        }
+      });
+
+      state.weeks = Array.from(mondaySet).sort((a, b) => b.localeCompare(a));
+
+      if (state.weeks.length > 0) {
+        if (!state.selectedWeek || !state.weeks.includes(state.selectedWeek)) {
+          state.selectedWeek = state.weeks[0];
+        }
+      } else {
+        state.selectedWeek = null;
+      }
+
+      const now = new Date();
+      state.lastLoadedAt = now.toTimeString().split(' ')[0];
+      document.getElementById('last-loaded-display').textContent = `Data last loaded at ${state.lastLoadedAt}`;
+
+      updateWeekSelectorUI();
+      renderDashboard();
+    }
+
+    /* ==========================================================================
+       6. WEEK SELECTOR CONTROLS
+       ========================================================================== */
+    function updateWeekSelectorUI() {
+      const labelEl = document.getElementById('current-week-label');
+      const prevBtn = document.getElementById('btn-prev-week');
+      const nextBtn = document.getElementById('btn-next-week');
+
+      if (!state.selectedWeek || state.weeks.length === 0) {
+        labelEl.textContent = 'No data available';
+        prevBtn.disabled = true;
+        nextBtn.disabled = true;
+        return;
+      }
+
+      labelEl.textContent = formatWeekLabel(state.selectedWeek);
+      const currentIndex = state.weeks.indexOf(state.selectedWeek);
+
+      prevBtn.disabled = currentIndex >= state.weeks.length - 1;
+      nextBtn.disabled = currentIndex <= 0;
+    }
+
+    function navigateWeek(delta) {
+      if (!state.selectedWeek || state.weeks.length === 0) return;
+      const currentIndex = state.weeks.indexOf(state.selectedWeek);
+      const targetIndex = currentIndex + delta;
+      if (targetIndex >= 0 && targetIndex < state.weeks.length) {
+        state.selectedWeek = state.weeks[targetIndex];
+        updateWeekSelectorUI();
+        renderDashboard();
+      }
+    }
+
+    /* ==========================================================================
+       7. CARRY-FORWARD & STRICT FILTERS
+       ========================================================================== */
+    function getSectionRowsWithCarryForward(tabKey, targetWeek) {
+      const rows = state.data[tabKey] || [];
+      const currentWeekRows = rows.filter(r => r._monday === targetWeek);
+
+      if (currentWeekRows.length > 0) {
+        return { rows: currentWeekRows, isCarriedForward: false, asOfWeek: targetWeek };
+      }
+
+      const earlierWeeks = state.weeks
+        .filter(w => w < targetWeek)
+        .sort((a, b) => b.localeCompare(a));
+
+      for (const w of earlierWeeks) {
+        const earlierRows = rows.filter(r => r._monday === w);
+        if (earlierRows.length > 0) {
+          return { rows: earlierRows, isCarriedForward: true, asOfWeek: w };
+        }
+      }
+
+      return { rows: [], isCarriedForward: false, asOfWeek: null };
+    }
+
+    function getStrictWeekRows(tabKey, targetWeek) {
+      const rows = state.data[tabKey] || [];
+      return rows.filter(r => r._monday === targetWeek);
+    }
+
+    /* ==========================================================================
+       8. METRIC CALCULATION HELPERS
+       ========================================================================== */
+    // Community: sum highest members_total per region
+    function getCommunityTotalMembers(commRows) {
+      if (!commRows || commRows.length === 0) return null;
+      const regionMaxMap = new Map();
+      commRows.forEach(r => {
+        const reg = (r.region || '').trim().toLowerCase();
+        if (!reg) return;
+        const val = parseNum(r.members_total);
+        if (val !== null) {
+          if (!regionMaxMap.has(reg) || val > regionMaxMap.get(reg)) {
+            regionMaxMap.set(reg, val);
+          }
+        }
+      });
+      if (regionMaxMap.size === 0) return null;
+      let total = 0;
+      for (const val of regionMaxMap.values()) {
+        total += val;
+      }
+      return total;
+    }
+
+    // ITI: count distinct states with email_sent > 0
+    function getEmailCampaignsRun(itiRows) {
+      if (!itiRows || itiRows.length === 0) return null;
+      const statesWithEmail = new Set();
+      itiRows.forEach(r => {
+        const state = (r.state || '').trim().toLowerCase();
+        const emailSent = parseNum(r.email_sent);
+        if (state && emailSent !== null && emailSent > 0) {
+          statesWithEmail.add(state);
+        }
+      });
+      return statesWithEmail.size;
+    }
+
+    // Computes top 6 metrics for given week
+    function calculateWeekSummaryMetrics(targetWeek) {
+      if (!targetWeek) return null;
+
+      const waRows = getStrictWeekRows('WA_CAMPAIGNS', targetWeek);
+      const commRows = getStrictWeekRows('COMMUNITY', targetWeek);
+      const itiRows = getStrictWeekRows('ITI', targetWeek);
+      const leadRows = getStrictWeekRows('LEADS', targetWeek);
+      const metaRows = getStrictWeekRows('META_ADS', targetWeek);
+
+      // 1. WhatsApp Campaigns Run
+      const waCampaignNames = new Set(waRows.map(r => (r.campaign || '').trim()).filter(Boolean));
+      const waCampaignsCount = waRows.length > 0 ? waCampaignNames.size : (state.data.WA_CAMPAIGNS?.length > 0 ? 0 : null);
+
+      // 2. WhatsApp Community Count
+      const commTotalMembers = getCommunityTotalMembers(commRows);
+
+      // 3. ITI Colleges Approached (sum of colleges_in_state)
+      const itiCollegesApproached = sumColumn(itiRows, 'colleges_in_state');
+
+      // 4. Incoming Leads (BD) (active leads count: stage != "Dropped")
+      const activeLeads = leadRows.filter(r => (r.stage || '').toLowerCase().trim() !== 'dropped');
+      const activeLeadsCount = leadRows.length > 0 ? activeLeads.length : (state.data.LEADS?.length > 0 ? 0 : null);
+
+      // 5. Email Campaigns Run (distinct states in ITI with email_sent > 0)
+      const emailCampaignsRun = getEmailCampaignsRun(itiRows);
+
+      // 6. LinkedIn Ad Spend (sum of spend in META_ADS)
+      const linkedInSpend = sumColumn(metaRows, 'spend');
+
+      return {
+        waCampaignsCount,
+        commTotalMembers,
+        itiCollegesApproached,
+        activeLeadsCount,
+        emailCampaignsRun,
+        linkedInSpend
+      };
+    }
+
+    // Builds diff badge vs last week
+    function renderTrendBadge(currentVal, prevVal, isSpend = false, isCurrency = false) {
+      if (currentVal === null || prevVal === null) {
+        return `<span class="trend-badge trend-neutral">No earlier week to compare</span>`;
+      }
+
+      const diff = currentVal - prevVal;
+      if (diff === 0) {
+        return `<span class="trend-badge trend-neutral">0 vs last week</span>`;
+      }
+
+      const isPositive = diff > 0;
+      let badgeClass = 'trend-neutral';
+      if (isSpend) {
+        badgeClass = isPositive ? 'trend-amber' : 'trend-negative';
+      } else {
+        badgeClass = isPositive ? 'trend-positive' : 'trend-negative';
+      }
+
+      const formattedVal = isCurrency
+        ? (isPositive ? '+₹' + formatIndianNumber(Math.abs(diff)) : '-₹' + formatIndianNumber(Math.abs(diff)))
+        : (isPositive ? '+' + formatIndianNumber(diff) : formatIndianNumber(diff));
+
+      return `<span class="trend-badge ${badgeClass}">${formattedVal} vs last week</span>`;
+    }
+
+    /* ==========================================================================
+       9. SECTION BUILDERS
+       ========================================================================== */
+
+    // Highlights Card
+    function renderHighlightsSection(week) {
+      const rows = state.data.WEEKS || [];
+      const row = rows.find(r => r._monday === week);
+      if (!row || isNullLike(row.highlights)) {
+        return '';
+      }
+
+      return `
+        <div class="highlights-section">
+          <div class="highlights-header">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+            Weekly Highlights
+          </div>
+          <div class="highlights-body">${escapeHtml(row.highlights)}</div>
+        </div>
+      `;
+    }
+
+    // Top 6 Summary Tiles
+    function renderTopSummaryTiles(currentWeek) {
+      const current = calculateWeekSummaryMetrics(currentWeek);
+      const currentIndex = state.weeks.indexOf(currentWeek);
+      const prevWeek = currentIndex + 1 < state.weeks.length ? state.weeks[currentIndex + 1] : null;
+      const prev = prevWeek ? calculateWeekSummaryMetrics(prevWeek) : null;
+
+      const waCampaignsBadge = renderTrendBadge(current.waCampaignsCount, prev ? prev.waCampaignsCount : null, false, false);
+      const commMembersBadge = renderTrendBadge(current.commTotalMembers, prev ? prev.commTotalMembers : null, false, false);
+      const itiCollegesBadge = renderTrendBadge(current.itiCollegesApproached, prev ? prev.itiCollegesApproached : null, false, false);
+      const leadsBadge = renderTrendBadge(current.activeLeadsCount, prev ? prev.activeLeadsCount : null, false, false);
+      const emailCampaignsBadge = renderTrendBadge(current.emailCampaignsRun, prev ? prev.emailCampaignsRun : null, false, false);
+      const spendBadge = renderTrendBadge(current.linkedInSpend, prev ? prev.linkedInSpend : null, true, true);
+
+      return `
+        <div class="top-summary-grid">
+          <div class="summary-tile">
+            <div>
+              <div class="summary-tile-label">WhatsApp Campaigns Run</div>
+              <div class="summary-tile-value">${formatIndianNumber(current.waCampaignsCount)}</div>
+            </div>
+            <div class="summary-tile-trend">${waCampaignsBadge}</div>
+          </div>
+
+          <div class="summary-tile">
+            <div>
+              <div class="summary-tile-label">WhatsApp Community Count</div>
+              <div class="summary-tile-value">${formatIndianNumber(current.commTotalMembers)}</div>
+            </div>
+            <div class="summary-tile-trend">${commMembersBadge}</div>
+          </div>
+
+          <div class="summary-tile">
+            <div>
+              <div class="summary-tile-label">ITI Colleges Approached</div>
+              <div class="summary-tile-value">${formatIndianNumber(current.itiCollegesApproached)}</div>
+            </div>
+            <div class="summary-tile-trend">${itiCollegesBadge}</div>
+          </div>
+
+          <div class="summary-tile">
+            <div>
+              <div class="summary-tile-label">Incoming Leads (BD)</div>
+              <div class="summary-tile-value">${formatIndianNumber(current.activeLeadsCount)}</div>
+            </div>
+            <div class="summary-tile-trend">${leadsBadge}</div>
+          </div>
+
+          <div class="summary-tile">
+            <div>
+              <div class="summary-tile-label">Email Campaigns Run</div>
+              <div class="summary-tile-value">${formatIndianNumber(current.emailCampaignsRun)}</div>
+            </div>
+            <div class="summary-tile-trend">${emailCampaignsBadge}</div>
+          </div>
+
+          <div class="summary-tile">
+            <div>
+              <div class="summary-tile-label">LinkedIn Ad Spend</div>
+              <div class="summary-tile-value">${formatCurrency(current.linkedInSpend)}</div>
+            </div>
+            <div class="summary-tile-trend">${spendBadge}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Section A: ITI College Outreach (CHANGE 1: Raw numbers only, Responded columns, Sheet Link button, 4 restructured tiles)
+    function renderITISection(week) {
+      const { rows, isCarriedForward, asOfWeek } = getSectionRowsWithCarryForward('ITI', week);
+
+      // Check for iti_sheet_link in WEEKS table
+      const weekRow = (state.data.WEEKS || []).find(r => r._monday === week);
+      const itiSheetLink = (weekRow && weekRow.iti_sheet_link && !isNullLike(weekRow.iti_sheet_link))
+        ? String(weekRow.iti_sheet_link).trim()
+        : null;
+
+      const itiLinkBtnHtml = itiSheetLink
+        ? `<a href="${escapeHtml(itiSheetLink)}" target="_blank" rel="noopener noreferrer" class="btn-outline-teal" title="Open detailed ITI sheet in new tab">↗ View detailed college data</a>`
+        : '';
+
+      if (rows.length === 0) {
+        return `
+          <section class="ops-section">
+            <div class="section-header">
+              <h2 class="section-title">ITI College Outreach</h2>
+              ${itiLinkBtnHtml}
+            </div>
+            <div class="empty-state-box">Nothing entered for this week.</div>
+          </section>
+        `;
+      }
+
+      // Compute aggregate metrics
+      let totalColleges = 0;
+      let govtColleges = 0;
+      let privateColleges = 0;
+      let emailSentGovt = 0;
+      let emailSentPriv = 0;
+      let waSentGovt = 0;
+      let waSentPriv = 0;
+      const distinctStates = new Set();
+
+      rows.forEach(r => {
+        const stateName = (r.state || '').trim();
+        if (stateName && !isNullLike(stateName)) {
+          distinctStates.add(stateName.toLowerCase());
+        }
+
+        const isGovt = !(r.college_type && String(r.college_type).toLowerCase().includes('priv'));
+        const colleges = parseNum(r.colleges_in_state) || 0;
+        const eSent = parseNum(r.email_sent) || 0;
+        const wSent = parseNum(r.wa_sent) || 0;
+
+        totalColleges += colleges;
+        if (isGovt) {
+          govtColleges += colleges;
+          emailSentGovt += eSent;
+          waSentGovt += wSent;
+        } else {
+          privateColleges += colleges;
+          emailSentPriv += eSent;
+          waSentPriv += wSent;
+        }
+      });
+
+      const totalEmailSent = sumColumn(rows, 'email_sent');
+      const totalEmailDelivered = sumColumn(rows, 'email_delivered');
+      const totalEmailRead = sumColumn(rows, 'email_read');
+      const totalEmailResponded = sumColumn(rows, 'email_responded');
+
+      const totalWaSent = sumColumn(rows, 'wa_sent');
+      const totalWaDelivered = sumColumn(rows, 'wa_delivered');
+      const totalWaRead = sumColumn(rows, 'wa_read');
+      const totalWaResponded = sumColumn(rows, 'wa_responded');
+
+      const statesCovered = distinctStates.size;
+
+      // Group rows by state
+      const statesMap = new Map();
+      rows.forEach(r => {
+        const stateName = (r.state || '–').trim();
+        if (!statesMap.has(stateName)) {
+          statesMap.set(stateName, []);
+        }
+        statesMap.get(stateName).push(r);
+      });
+
+      let tableRowsHtml = '';
+      let isFirstState = true;
+
+      statesMap.forEach((stateRows, stateName) => {
+        // Sort Government row first, then Private
+        stateRows.sort((a, b) => {
+          const typeA = (a.college_type || 'Government').trim().toLowerCase();
+          const typeB = (b.college_type || 'Government').trim().toLowerCase();
+          const isGovtA = typeA.includes('govt') || typeA.includes('government');
+          const isGovtB = typeB.includes('govt') || typeB.includes('government');
+          if (isGovtA && !isGovtB) return -1;
+          if (!isGovtA && isGovtB) return 1;
+          return typeA.localeCompare(typeB);
+        });
+
+        const dividerClass = isFirstState ? '' : 'state-group-divider';
+        isFirstState = false;
+
+        stateRows.forEach((r, idx) => {
+          const rawType = (r.college_type || '').trim();
+          const normalizedType = rawType && rawType.toLowerCase().includes('priv') ? 'Private' : 'Government';
+          const isGovtRow = normalizedType === 'Government';
+
+          const emailSent = parseNum(r.email_sent);
+          const emailDelivered = parseNum(r.email_delivered);
+          const emailRead = parseNum(r.email_read);
+          const emailResponded = parseNum(r.email_responded);
+
+          const waSent = parseNum(r.wa_sent);
+          const waDelivered = parseNum(r.wa_delivered);
+          const waRead = parseNum(r.wa_read);
+          const waResponded = parseNum(r.wa_responded);
+
+          // Soft warnings per row
+          const warnings = [];
+          if (emailDelivered !== null && emailSent !== null && emailDelivered > emailSent) {
+            warnings.push(`Email delivered (${emailDelivered}) > sent (${emailSent})`);
+          }
+          if (emailRead !== null && emailDelivered !== null && emailRead > emailDelivered) {
+            warnings.push(`Email read (${emailRead}) > delivered (${emailDelivered})`);
+          }
+          if (emailResponded !== null && emailRead !== null && emailResponded > emailRead) {
+            warnings.push(`Email responded (${emailResponded}) > read (${emailRead})`);
+          }
+          if (waDelivered !== null && waSent !== null && waDelivered > waSent) {
+            warnings.push(`WA delivered (${waDelivered}) > sent (${waSent})`);
+          }
+          if (waRead !== null && waDelivered !== null && waRead > waDelivered) {
+            warnings.push(`WA read (${waRead}) > delivered (${waDelivered})`);
+          }
+          if (waResponded !== null && waRead !== null && waResponded > waRead) {
+            warnings.push(`WA responded (${waResponded}) > read (${waRead})`);
+          }
+
+          const warningIcon = warnings.length > 0
+            ? `<span class="soft-warning-icon" title="${escapeHtml(warnings.join('; '))}">&nbsp;⚠</span>`
+            : '';
+
+          const rowDivider = (idx === 0) ? dividerClass : '';
+          const stateDisplay = isGovtRow
+            ? `<strong>${escapeHtml(stateName)}</strong>`
+            : `<span style="color: var(--text-subtle); padding-left: 12px;">↳</span>`;
+
+          tableRowsHtml += `
+            <tr class="${rowDivider}">
+              <td class="text-left font-medium">${stateDisplay}</td>
+              <td class="text-left"><span class="college-type-tag ${normalizedType.toLowerCase()}">${normalizedType}</span></td>
+              <td class="text-right">${formatRawNum(r.colleges_in_state)}</td>
+              <td class="text-right">${formatRawNum(r.email_sent)}</td>
+              <td class="text-right">${formatRawNum(r.email_delivered)}</td>
+              <td class="text-right">${formatRawNum(r.email_read)}</td>
+              <td class="text-right">${formatRawNum(r.email_responded)}</td>
+              <td class="text-right">${formatRawNum(r.wa_sent)}</td>
+              <td class="text-right">${formatRawNum(r.wa_delivered)}</td>
+              <td class="text-right">${formatRawNum(r.wa_read)}</td>
+              <td class="text-right">${formatRawNum(r.wa_responded)}</td>
+              <td class="text-center">${warningIcon || '–'}</td>
+            </tr>
+          `;
+        });
+      });
+
+      const carryForwardHtml = isCarriedForward
+        ? `<div class="carry-forward-notice">ℹ As of week of ${formatCarryForwardDate(asOfWeek)} (no data for selected week)</div>`
+        : '';
+
+      return `
+        <section class="ops-section">
+          <div class="section-header">
+            <h2 class="section-title">ITI College Outreach</h2>
+            ${itiLinkBtnHtml}
+          </div>
+
+          ${carryForwardHtml}
+
+          <!-- Restructured 4 Summary Tiles (CHANGE 1d) -->
+          <div class="section-stats-bar">
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Colleges Mapped</span>
+              <span class="mini-stat-val">${formatIndianNumber(totalColleges)}</span>
+              <span class="mini-stat-sub">Govt: ${formatIndianNumber(govtColleges)} | Private: ${formatIndianNumber(privateColleges)}</span>
+            </div>
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Email Sent</span>
+              <span class="mini-stat-val">${formatIndianNumber(totalEmailSent)}</span>
+              <span class="mini-stat-sub">Govt: ${formatIndianNumber(emailSentGovt)} | Private: ${formatIndianNumber(emailSentPriv)}</span>
+              <span class="mini-stat-sub">${formatIndianNumber(totalEmailDelivered)} delivered · ${formatIndianNumber(totalEmailRead)} read · ${formatIndianNumber(totalEmailResponded)} responded</span>
+            </div>
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">WA Sent</span>
+              <span class="mini-stat-val">${formatIndianNumber(totalWaSent)}</span>
+              <span class="mini-stat-sub">Govt: ${formatIndianNumber(waSentGovt)} | Private: ${formatIndianNumber(waSentPriv)}</span>
+              <span class="mini-stat-sub">${formatIndianNumber(totalWaDelivered)} delivered · ${formatIndianNumber(totalWaRead)} read · ${formatIndianNumber(totalWaResponded)} responded</span>
+            </div>
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">States Covered</span>
+              <span class="mini-stat-val">${statesCovered}</span>
+              <span class="mini-stat-sub">${statesCovered === 1 ? '1 active state' : `${statesCovered} active states`}</span>
+            </div>
+          </div>
+
+          <!-- Raw Numbers Only Table (CHANGE 1b) -->
+          <div class="table-container">
+            <table class="ops-table">
+              <thead>
+                <tr>
+                  <th class="text-left">State</th>
+                  <th class="text-left">Type</th>
+                  <th class="text-right">Colleges</th>
+                  <th class="text-right">Email Sent</th>
+                  <th class="text-right">Email Delivered</th>
+                  <th class="text-right">Email Read</th>
+                  <th class="text-right">Email Responded</th>
+                  <th class="text-right">WA Sent</th>
+                  <th class="text-right">WA Delivered</th>
+                  <th class="text-right">WA Read</th>
+                  <th class="text-right">WA Responded</th>
+                  <th class="text-center" style="width: 32px;">⚠</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${tableRowsHtml}
+                <tr class="totals-row">
+                  <td class="text-left">Total</td>
+                  <td class="text-left">–</td>
+                  <td class="text-right">${formatIndianNumber(totalColleges)}</td>
+                  <td class="text-right">${formatIndianNumber(totalEmailSent)}</td>
+                  <td class="text-right">${formatIndianNumber(totalEmailDelivered)}</td>
+                  <td class="text-right">${formatIndianNumber(totalEmailRead)}</td>
+                  <td class="text-right">${formatIndianNumber(totalEmailResponded)}</td>
+                  <td class="text-right">${formatIndianNumber(totalWaSent)}</td>
+                  <td class="text-right">${formatIndianNumber(totalWaDelivered)}</td>
+                  <td class="text-right">${formatIndianNumber(totalWaRead)}</td>
+                  <td class="text-right">${formatIndianNumber(totalWaResponded)}</td>
+                  <td class="text-center">–</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      `;
+    }
+
+    // Section B: WhatsApp Recruitment Campaigns (CHANGE 2: Raw numbers, 1st Month Payroll, updated tiles)
+    function renderWACampaignsSection(week) {
+      const rows = getStrictWeekRows('WA_CAMPAIGNS', week);
+
+      if (rows.length === 0) {
+        return `
+          <section class="ops-section">
+            <div class="section-header">
+              <h2 class="section-title">WhatsApp Recruitment Campaigns</h2>
+            </div>
+            <div class="empty-state-box">Nothing entered for this week.</div>
+          </section>
+        `;
+      }
+
+      const totalCampaigns = rows.length;
+      const totalContacts = sumColumn(rows, 'contacts');
+      const totalDelivered = sumColumn(rows, 'delivered');
+      const totalRead = sumColumn(rows, 'read');
+      const totalApplications = sumColumn(rows, 'applications');
+      const totalSelections = sumColumn(rows, 'selections');
+      const totalJoined = sumColumn(rows, 'joined');
+      const totalPayroll = sumColumn(rows, 'first_month_payroll');
+
+      let tableRowsHtml = '';
+      rows.forEach(r => {
+        const contacts = parseNum(r.contacts);
+        const delivered = parseNum(r.delivered);
+        const read = parseNum(r.read);
+        const applications = parseNum(r.applications);
+        const selections = parseNum(r.selections);
+        const joined = parseNum(r.joined);
+
+        // Soft warnings
+        const warnings = [];
+        if (delivered !== null && contacts !== null && delivered > contacts) {
+          warnings.push(`Delivered (${delivered}) > contacts (${contacts})`);
+        }
+        if (read !== null && delivered !== null && read > delivered) {
+          warnings.push(`Read (${read}) > delivered (${delivered})`);
+        }
+        if (selections !== null && applications !== null && selections > applications) {
+          warnings.push(`Selections (${selections}) > applications (${applications})`);
+        }
+        if (joined !== null && selections !== null && joined > selections) {
+          warnings.push(`Joined (${joined}) > selections (${selections})`);
+        }
+
+        const warningIcon = warnings.length > 0
+          ? `<span class="soft-warning-icon" title="${escapeHtml(warnings.join('; '))}">&nbsp;⚠</span>`
+          : '';
+
+        tableRowsHtml += `
+          <tr>
+            <td class="text-left font-medium"><strong>${formatText(r.campaign)}</strong></td>
+            <td class="text-left">${formatText(r.client)}</td>
+            <td class="text-left">${formatText(r.recruiter)}</td>
+            <td class="text-right">${formatRawNum(r.contacts)}</td>
+            <td class="text-right">${formatRawNum(r.delivered)}</td>
+            <td class="text-right">${formatRawNum(r.read)}</td>
+            <td class="text-right">${formatRawNum(r.applications)}</td>
+            <td class="text-right">${formatRawNum(r.selections)}</td>
+            <td class="text-right">${formatRawNum(r.joined)}</td>
+            <td class="text-right">${formatRawCurrency(r.first_month_payroll)}</td>
+            <td class="text-center">${warningIcon || '–'}</td>
+          </tr>
+        `;
+      });
+
+      return `
+        <section class="ops-section">
+          <div class="section-header">
+            <h2 class="section-title">WhatsApp Recruitment Campaigns</h2>
+          </div>
+
+          <!-- Summary Tiles (CHANGE 2c: 5 primary focus tiles, no %) -->
+          <div class="section-stats-bar">
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Campaigns</span>
+              <span class="mini-stat-val">${totalCampaigns}</span>
+            </div>
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Total Contacts</span>
+              <span class="mini-stat-val">${formatIndianNumber(totalContacts)}</span>
+            </div>
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Applications</span>
+              <span class="mini-stat-val">${formatIndianNumber(totalApplications)}</span>
+            </div>
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Joined</span>
+              <span class="mini-stat-val">${formatIndianNumber(totalJoined)}</span>
+            </div>
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Total 1st Month Payroll</span>
+              <span class="mini-stat-val">${formatCurrency(totalPayroll)}</span>
+            </div>
+          </div>
+
+          <!-- Raw Numbers Only Table (CHANGE 2b) -->
+          <div class="table-container">
+            <table class="ops-table">
+              <thead>
+                <tr>
+                  <th class="text-left">Campaign</th>
+                  <th class="text-left">Client</th>
+                  <th class="text-left">Recruiter</th>
+                  <th class="text-right">Contacts</th>
+                  <th class="text-right">Delivered</th>
+                  <th class="text-right">Read</th>
+                  <th class="text-right">Applications</th>
+                  <th class="text-right">Selections</th>
+                  <th class="text-right">Joined</th>
+                  <th class="text-right">1st Month Payroll (₹)</th>
+                  <th class="text-center" style="width: 32px;">⚠</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${tableRowsHtml}
+                <tr class="totals-row">
+                  <td class="text-left">Total</td>
+                  <td class="text-left">–</td>
+                  <td class="text-left">–</td>
+                  <td class="text-right">${formatIndianNumber(totalContacts)}</td>
+                  <td class="text-right">${formatIndianNumber(totalDelivered)}</td>
+                  <td class="text-right">${formatIndianNumber(totalRead)}</td>
+                  <td class="text-right">${formatIndianNumber(totalApplications)}</td>
+                  <td class="text-right">${formatIndianNumber(totalSelections)}</td>
+                  <td class="text-right">${formatIndianNumber(totalJoined)}</td>
+                  <td class="text-right">${formatCurrency(totalPayroll)}</td>
+                  <td class="text-center">–</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      `;
+    }
+
+    // Section C: WhatsApp Community (by region)
+    function renderCommunitySection(week) {
+      const rawRows = getStrictWeekRows('COMMUNITY', week);
+      const VALID_REGIONS = ['east', 'west', 'north', 'south', 'central'];
+
+      const rows = rawRows.filter(r => {
+        const reg = (r.region || '').toLowerCase().trim();
+        return VALID_REGIONS.includes(reg);
+      });
+
+      if (rows.length === 0) {
+        return `
+          <section class="ops-section">
+            <div class="section-header">
+              <h2 class="section-title">WhatsApp Community (by Region)</h2>
+            </div>
+            <div class="empty-state-box">Nothing entered for this week.</div>
+          </section>
+        `;
+      }
+
+      const totalJobs = sumColumn(rows, 'jobs_posted');
+      const totalMembersAdded = sumColumn(rows, 'members_added');
+      const totalMembersNow = sumColumn(rows, 'members_total');
+
+      let fastestRegion = '–';
+      let maxAdded = -1;
+      rows.forEach(r => {
+        const added = parseNum(r.members_added);
+        if (added !== null && added > maxAdded) {
+          maxAdded = added;
+          fastestRegion = r.region;
+        }
+      });
+
+      let tableRowsHtml = '';
+      rows.forEach(r => {
+        tableRowsHtml += `
+          <tr>
+            <td class="text-left font-medium"><strong>${formatText(r.region)}</strong></td>
+            <td class="text-right">${formatRawNum(r.jobs_posted)}</td>
+            <td class="text-right">${formatRawNum(r.members_added)}</td>
+            <td class="text-right">${formatRawNum(r.members_total)}</td>
+            <td class="text-left" style="white-space: normal; max-width: 320px;">${formatText(r.growth_reason)}</td>
+          </tr>
+        `;
+      });
+
+      return `
+        <section class="ops-section">
+          <div class="section-header">
+            <h2 class="section-title">WhatsApp Community (by Region)</h2>
+          </div>
+
+          <!-- Summary Tiles -->
+          <div class="section-stats-bar">
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Total Jobs Posted</span>
+              <span class="mini-stat-val">${formatIndianNumber(totalJobs)}</span>
+            </div>
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Members Added</span>
+              <span class="mini-stat-val">${formatIndianNumber(totalMembersAdded)}</span>
+            </div>
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Total Members Now</span>
+              <span class="mini-stat-val">${formatIndianNumber(totalMembersNow)}</span>
+            </div>
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Fastest Growing</span>
+              <span class="mini-stat-val">${formatText(fastestRegion)}</span>
+              <span class="mini-stat-sub">${maxAdded >= 0 ? '+' + formatIndianNumber(maxAdded) + ' members' : ''}</span>
+            </div>
+          </div>
+
+          <!-- Table -->
+          <div class="table-container">
+            <table class="ops-table">
+              <thead>
+                <tr>
+                  <th class="text-left">Region</th>
+                  <th class="text-right">Jobs Posted</th>
+                  <th class="text-right">Members Added</th>
+                  <th class="text-right">Members Total</th>
+                  <th class="text-left">Growth Reason</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${tableRowsHtml}
+                <tr class="totals-row">
+                  <td class="text-left">Total</td>
+                  <td class="text-right">${formatIndianNumber(totalJobs)}</td>
+                  <td class="text-right">${formatIndianNumber(totalMembersAdded)}</td>
+                  <td class="text-right">${formatIndianNumber(totalMembersNow)}</td>
+                  <td class="text-left">–</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      `;
+    }
+
+    // Section D: Meta Ad Campaigns (CHANGE 3: Conversion Rate column, formula: joined/calls*100)
+    function renderMetaAdsSection(week) {
+      const rows = getStrictWeekRows('META_ADS', week);
+
+      if (rows.length === 0) {
+        return `
+          <section class="ops-section">
+            <div class="section-header">
+              <h2 class="section-title">Meta Ad Campaigns</h2>
+            </div>
+            <div class="empty-state-box">Nothing entered for this week.</div>
+          </section>
+        `;
+      }
+
+      const totalSpend = sumColumn(rows, 'spend');
+      const totalImpressions = sumColumn(rows, 'impressions');
+      const totalCalls = sumColumn(rows, 'calls');
+      const totalSelections = sumColumn(rows, 'selections');
+      const totalJoined = sumColumn(rows, 'joined');
+      const totalConversionRate = formatPercent(totalJoined, totalCalls);
+
+      let tableRowsHtml = '';
+      rows.forEach(r => {
+        const calls = parseNum(r.calls);
+        const selections = parseNum(r.selections);
+        const joined = parseNum(r.joined);
+        const convRate = formatPercent(joined, calls);
+
+        // Soft warnings
+        const warnings = [];
+        if (selections !== null && calls !== null && selections > calls) {
+          warnings.push(`Selections (${selections}) > calls (${calls})`);
+        }
+        if (joined !== null && selections !== null && joined > selections) {
+          warnings.push(`Joined (${joined}) > selections (${selections})`);
+        }
+
+        const warningIcon = warnings.length > 0
+          ? `<span class="soft-warning-icon" title="${escapeHtml(warnings.join('; '))}">&nbsp;⚠</span>`
+          : '';
+
+        tableRowsHtml += `
+          <tr>
+            <td class="text-left font-medium"><strong>${formatText(r.campaign)}</strong></td>
+            <td class="text-left">${formatText(r.client)}</td>
+            <td class="text-right">${formatRawCurrency(r.spend)}</td>
+            <td class="text-right">${formatRawNum(r.impressions)}</td>
+            <td class="text-right">${formatRawNum(r.calls)}</td>
+            <td class="text-right">${formatRawNum(r.selections)}</td>
+            <td class="text-right">${formatRawNum(r.joined)}</td>
+            <td class="text-right font-medium">${convRate}</td>
+            <td class="text-center">${warningIcon || '–'}</td>
+          </tr>
+        `;
+      });
+
+      return `
+        <section class="ops-section">
+          <div class="section-header">
+            <h2 class="section-title">Meta Ad Campaigns</h2>
+          </div>
+
+          <!-- Summary Tiles -->
+          <div class="section-stats-bar">
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Total Spend</span>
+              <span class="mini-stat-val">${formatCurrency(totalSpend)}</span>
+            </div>
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Impressions</span>
+              <span class="mini-stat-val">${formatIndianNumber(totalImpressions)}</span>
+            </div>
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Calls</span>
+              <span class="mini-stat-val">${formatIndianNumber(totalCalls)}</span>
+            </div>
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Selections</span>
+              <span class="mini-stat-val">${formatIndianNumber(totalSelections)}</span>
+            </div>
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Joined</span>
+              <span class="mini-stat-val">${formatIndianNumber(totalJoined)}</span>
+              <span class="mini-stat-sub">${totalConversionRate} conversion rate</span>
+            </div>
+          </div>
+
+          <!-- Table (CHANGE 3a: Conversion Rate as last data column) -->
+          <div class="table-container">
+            <table class="ops-table">
+              <thead>
+                <tr>
+                  <th class="text-left">Campaign</th>
+                  <th class="text-left">Client</th>
+                  <th class="text-right">Spend (₹)</th>
+                  <th class="text-right">Impressions</th>
+                  <th class="text-right">Calls</th>
+                  <th class="text-right">Selections</th>
+                  <th class="text-right">Joined</th>
+                  <th class="text-right">Conversion Rate</th>
+                  <th class="text-center" style="width: 32px;">⚠</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${tableRowsHtml}
+                <tr class="totals-row">
+                  <td class="text-left">Total</td>
+                  <td class="text-left">–</td>
+                  <td class="text-right">${formatCurrency(totalSpend)}</td>
+                  <td class="text-right">${formatIndianNumber(totalImpressions)}</td>
+                  <td class="text-right">${formatIndianNumber(totalCalls)}</td>
+                  <td class="text-right">${formatIndianNumber(totalSelections)}</td>
+                  <td class="text-right">${formatIndianNumber(totalJoined)}</td>
+                  <td class="text-right font-medium">${totalConversionRate}</td>
+                  <td class="text-center">–</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      `;
+    }
+
+    // Section E: Thought Leadership (Social) (CHANGE 5: Brand platform badges)
+    function renderSocialSection(week) {
+      const rows = getStrictWeekRows('SOCIAL', week);
+
+      if (rows.length === 0) {
+        return `
+          <section class="ops-section">
+            <div class="section-header">
+              <h2 class="section-title">Thought Leadership (Social)</h2>
+            </div>
+            <div class="empty-state-box">Nothing entered for this week.</div>
+          </section>
+        `;
+      }
+
+      const totalPosts = sumColumn(rows, 'posts');
+      const totalImpressions = sumColumn(rows, 'impressions');
+      const totalFollowersGained = sumColumn(rows, 'followers_gained');
+      const totalFollowersNow = sumColumn(rows, 'followers_now');
+
+      let tableRowsHtml = '';
+      rows.forEach(r => {
+        tableRowsHtml += `
+          <tr>
+            <td class="text-left font-medium"><strong>${formatText(r.person)}</strong></td>
+            <td class="text-left">${renderPlatformBadge(r.platform)}</td>
+            <td class="text-right">${formatRawNum(r.posts)}</td>
+            <td class="text-right">${formatRawNum(r.impressions)}</td>
+            <td class="text-right">${formatRawNum(r.followers_gained)}</td>
+            <td class="text-right">${formatRawNum(r.followers_now)}</td>
+          </tr>
+        `;
+      });
+
+      return `
+        <section class="ops-section">
+          <div class="section-header">
+            <h2 class="section-title">Thought Leadership (Social)</h2>
+          </div>
+
+          <!-- Summary Tiles -->
+          <div class="section-stats-bar">
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Total Posts</span>
+              <span class="mini-stat-val">${formatIndianNumber(totalPosts)}</span>
+            </div>
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Total Impressions</span>
+              <span class="mini-stat-val">${formatIndianNumber(totalImpressions)}</span>
+            </div>
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Followers Gained</span>
+              <span class="mini-stat-val">${formatIndianNumber(totalFollowersGained)}</span>
+            </div>
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Followers Now</span>
+              <span class="mini-stat-val">${formatIndianNumber(totalFollowersNow)}</span>
+            </div>
+          </div>
+
+          <!-- Table -->
+          <div class="table-container">
+            <table class="ops-table">
+              <thead>
+                <tr>
+                  <th class="text-left">Person</th>
+                  <th class="text-left">Platform</th>
+                  <th class="text-right">Posts</th>
+                  <th class="text-right">Impressions</th>
+                  <th class="text-right">Followers Gained</th>
+                  <th class="text-right">Followers Now</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${tableRowsHtml}
+                <tr class="totals-row">
+                  <td class="text-left">Total</td>
+                  <td class="text-left">–</td>
+                  <td class="text-right">${formatIndianNumber(totalPosts)}</td>
+                  <td class="text-right">${formatIndianNumber(totalImpressions)}</td>
+                  <td class="text-right">${formatIndianNumber(totalFollowersGained)}</td>
+                  <td class="text-right">${formatIndianNumber(totalFollowersNow)}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      `;
+    }
+
+    // Section F: Other Activities
+    function renderOtherActivitiesSection(week) {
+      const rows = getStrictWeekRows('OTHER_ACTIVITIES', week);
+
+      if (rows.length === 0) {
+        return `
+          <section class="ops-section">
+            <div class="section-header">
+              <h2 class="section-title">Other Activities</h2>
+            </div>
+            <div class="empty-state-box">Nothing entered for this week.</div>
+          </section>
+        `;
+      }
+
+      const totalActivities = rows.length;
+      const totalReach = sumColumn(rows, 'reach');
+      const totalCost = sumColumn(rows, 'cost');
+
+      let tableRowsHtml = '';
+      rows.forEach(r => {
+        tableRowsHtml += `
+          <tr>
+            <td class="text-left font-medium"><strong>${formatText(r.activity_name)}</strong></td>
+            <td class="text-left">${formatText(r.activity_type)}</td>
+            <td class="text-left">${renderPlatformBadge(r.platform)}</td>
+            <td class="text-right">${formatRawNum(r.reach)}</td>
+            <td class="text-right">${formatRawCurrency(r.cost)}</td>
+            <td class="text-left" style="white-space: normal; max-width: 260px;">${formatText(r.outcome)}</td>
+            <td class="text-left" style="white-space: normal; max-width: 280px;">${formatText(r.notes)}</td>
+          </tr>
+        `;
+      });
+
+      return `
+        <section class="ops-section">
+          <div class="section-header">
+            <h2 class="section-title">Other Activities</h2>
+          </div>
+
+          <!-- Summary Tiles -->
+          <div class="section-stats-bar">
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Activities Run</span>
+              <span class="mini-stat-val">${totalActivities}</span>
+            </div>
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Total Reach</span>
+              <span class="mini-stat-val">${formatIndianNumber(totalReach)}</span>
+            </div>
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Total Cost</span>
+              <span class="mini-stat-val">${formatCurrency(totalCost)}</span>
+            </div>
+          </div>
+
+          <!-- Table -->
+          <div class="table-container">
+            <table class="ops-table">
+              <thead>
+                <tr>
+                  <th class="text-left">Activity</th>
+                  <th class="text-left">Type</th>
+                  <th class="text-left">Platform</th>
+                  <th class="text-right">Reach</th>
+                  <th class="text-right">Cost (₹)</th>
+                  <th class="text-left">Outcome</th>
+                  <th class="text-left">Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${tableRowsHtml}
+                <tr class="totals-row">
+                  <td class="text-left">Total</td>
+                  <td class="text-left">–</td>
+                  <td class="text-left">–</td>
+                  <td class="text-right">${formatIndianNumber(totalReach)}</td>
+                  <td class="text-right">${formatCurrency(totalCost)}</td>
+                  <td class="text-left">–</td>
+                  <td class="text-left">–</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      `;
+    }
+
+    // Section G: Incoming Leads (CHANGE 4: Channel column with badges)
+    function renderLeadsSection(week) {
+      const { rows, isCarriedForward, asOfWeek } = getSectionRowsWithCarryForward('LEADS', week);
+
+      if (rows.length === 0) {
+        return `
+          <section class="ops-section">
+            <div class="section-header">
+              <h2 class="section-title">Incoming Leads</h2>
+            </div>
+            <div class="empty-state-box">Nothing entered for this week.</div>
+          </section>
+        `;
+      }
+
+      let discussionCount = 0;
+      let proposalCount = 0;
+      let contractSignedCount = 0;
+      let droppedCount = 0;
+
+      rows.forEach(r => {
+        const stage = (r.stage || '').toLowerCase().trim();
+        if (stage === 'discussion') discussionCount++;
+        else if (stage === 'proposal') proposalCount++;
+        else if (stage === 'contract signed') contractSignedCount++;
+        else if (stage === 'dropped') droppedCount++;
+      });
+
+      const activeRows = rows.filter(r => (r.stage || '').toLowerCase().trim() !== 'dropped');
+      const activeCount = activeRows.length;
+
+      const pipelineRev = sumColumn(activeRows, 'expected_revenue');
+      const pipelineGP = sumColumn(activeRows, 'expected_gp');
+
+      const signedRows = rows.filter(r => (r.stage || '').toLowerCase().trim() === 'contract signed');
+      const signedRev = sumColumn(signedRows, 'expected_revenue');
+      const signedGP = sumColumn(signedRows, 'expected_gp');
+      const marginPct = (signedRev !== null && signedGP !== null && signedRev > 0)
+        ? formatPercent(signedGP, signedRev)
+        : '–';
+
+      let tableRowsHtml = '';
+      rows.forEach(r => {
+        const stageRaw = (r.stage || '').trim();
+        const stageNorm = stageRaw.toLowerCase();
+        const isDropped = stageNorm === 'dropped';
+
+        let chipClass = 'stage-pill-discussion';
+        if (stageNorm === 'proposal') chipClass = 'stage-pill-proposal';
+        else if (stageNorm === 'contract signed') chipClass = 'stage-pill-contract-signed';
+        else if (stageNorm === 'dropped') chipClass = 'stage-pill-dropped';
+
+        tableRowsHtml += `
+          <tr class="${isDropped ? 'row-dropped' : ''}">
+            <td class="text-left font-medium lead-name"><strong>${formatText(r.prospect)}</strong></td>
+            <td class="text-left"><span class="stage-pill ${chipClass}">${formatText(stageRaw)}</span></td>
+            <td class="text-left">${renderChannelBadge(r.channel)}</td>
+            <td class="text-right">${formatRawCurrency(r.expected_revenue)}</td>
+            <td class="text-right">${formatRawCurrency(r.expected_gp)}</td>
+            <td class="text-left" style="white-space: normal; max-width: 340px;">${formatText(r.notes)}</td>
+          </tr>
+        `;
+      });
+
+      const carryForwardHtml = isCarriedForward
+        ? `<div class="carry-forward-notice">ℹ As of week of ${formatCarryForwardDate(asOfWeek)} (no data for selected week)</div>`
+        : '';
+
+      return `
+        <section class="ops-section">
+          <div class="section-header">
+            <h2 class="section-title">Incoming Leads</h2>
+          </div>
+
+          ${carryForwardHtml}
+
+          <!-- Stage Counts Bar -->
+          <div class="stage-chips-bar">
+            <span class="stage-pill stage-pill-discussion">Discussion (${discussionCount})</span>
+            <span class="stage-pill stage-pill-proposal">Proposal (${proposalCount})</span>
+            <span class="stage-pill stage-pill-contract-signed">Contract signed (${contractSignedCount})</span>
+            <span class="stage-pill stage-pill-dropped">Dropped (${droppedCount})</span>
+          </div>
+
+          <!-- Summary Tiles -->
+          <div class="section-stats-bar">
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Active Leads</span>
+              <span class="mini-stat-val">${activeCount}</span>
+            </div>
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Pipeline Revenue</span>
+              <span class="mini-stat-val">${formatCurrency(pipelineRev)}</span>
+            </div>
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Pipeline GP</span>
+              <span class="mini-stat-val">${formatCurrency(pipelineGP)}</span>
+            </div>
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Signed Revenue</span>
+              <span class="mini-stat-val">${formatCurrency(signedRev)}</span>
+            </div>
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Signed GP</span>
+              <span class="mini-stat-val">${formatCurrency(signedGP)}</span>
+            </div>
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Signed Margin</span>
+              <span class="mini-stat-val">${marginPct}</span>
+            </div>
+          </div>
+
+          <!-- Table (CHANGE 4b: Channel column added) -->
+          <div class="table-container">
+            <table class="ops-table">
+              <thead>
+                <tr>
+                  <th class="text-left">Prospect</th>
+                  <th class="text-left">Stage</th>
+                  <th class="text-left">Channel</th>
+                  <th class="text-right">Expected Revenue (₹)</th>
+                  <th class="text-right">Expected GP (₹)</th>
+                  <th class="text-left">Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${tableRowsHtml}
+                <tr class="totals-row">
+                  <td class="text-left">Total (Active)</td>
+                  <td class="text-left">–</td>
+                  <td class="text-left">–</td>
+                  <td class="text-right">${formatCurrency(pipelineRev)}</td>
+                  <td class="text-right">${formatCurrency(pipelineGP)}</td>
+                  <td class="text-left">–</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      `;
+    }
+
+    // Section H: ROI Summary (at the very end)
+    function renderROISection(week) {
+      const rows = getStrictWeekRows('ROI', week);
+
+      if (rows.length === 0) {
+        return `
+          <section class="ops-section">
+            <div class="section-header">
+              <h2 class="section-title">ROI Summary</h2>
+            </div>
+            <div class="banner banner-neutral" style="margin-bottom: 16px;">
+              <span class="banner-icon">ℹ</span>
+              <div class="banner-content">Cost and ROI figures are entered and calculated in your Google Sheet. This section displays the data as-is.</div>
+            </div>
+            <div class="empty-state-box">Nothing entered for this week.</div>
+          </section>
+        `;
+      }
+
+      const totalCost = sumColumn(rows, 'cost');
+      const totalActivities = rows.length;
+
+      let bestRoiVal = -Infinity;
+      let bestRoiActivity = '–';
+      let sumRoi = 0;
+      let countWithRoi = 0;
+
+      rows.forEach(r => {
+        const roi = parseNum(r.roi_percent);
+        if (roi !== null) {
+          sumRoi += roi;
+          countWithRoi++;
+          if (roi > bestRoiVal) {
+            bestRoiVal = roi;
+            bestRoiActivity = r.activity || 'Activity';
+          }
+        }
+      });
+
+      const bestRoiDisplay = countWithRoi > 0 ? `${formatText(bestRoiActivity)}: ${bestRoiVal}%` : '–';
+      const avgRoiDisplay = countWithRoi > 0 ? (sumRoi / countWithRoi).toFixed(1) + '%' : '–';
+
+      let tableRowsHtml = '';
+      rows.forEach(r => {
+        const roi = parseNum(r.roi_percent);
+        const roiDisplay = roi !== null ? `${roi}%` : '–';
+
+        tableRowsHtml += `
+          <tr>
+            <td class="text-left font-medium"><strong>${formatText(r.activity)}</strong></td>
+            <td class="text-left">${renderPlatformBadge(r.category)}</td>
+            <td class="text-right">${formatRawCurrency(r.cost)}</td>
+            <td class="text-left" style="white-space: normal; max-width: 240px;">${formatText(r.outcome_description)}</td>
+            <td class="text-right">${formatRawNum(r.outcome_value)}</td>
+            <td class="text-left">${formatText(r.outcome_unit)}</td>
+            <td class="text-right font-medium">${roiDisplay}</td>
+            <td class="text-left" style="white-space: normal; max-width: 280px;">${formatText(r.notes)}</td>
+          </tr>
+        `;
+      });
+
+      return `
+        <section class="ops-section">
+          <div class="section-header">
+            <h2 class="section-title">ROI Summary</h2>
+          </div>
+
+          <!-- Info Banner -->
+          <div class="banner banner-neutral" style="margin-bottom: 18px;">
+            <span class="banner-icon">ℹ</span>
+            <div class="banner-content">Cost and ROI figures are entered and calculated in your Google Sheet. This section displays the data as-is.</div>
+          </div>
+
+          <!-- Summary Tiles -->
+          <div class="section-stats-bar">
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Total Cost This Week</span>
+              <span class="mini-stat-val">${formatCurrency(totalCost)}</span>
+            </div>
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Activities Tracked</span>
+              <span class="mini-stat-val">${totalActivities}</span>
+            </div>
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Best ROI</span>
+              <span class="mini-stat-val" style="font-size: 15px;">${bestRoiDisplay}</span>
+            </div>
+            <div class="mini-stat-card">
+              <span class="mini-stat-label">Avg ROI</span>
+              <span class="mini-stat-val">${avgRoiDisplay}</span>
+            </div>
+          </div>
+
+          <!-- Table -->
+          <div class="table-container">
+            <table class="ops-table">
+              <thead>
+                <tr>
+                  <th class="text-left">Activity</th>
+                  <th class="text-left">Category</th>
+                  <th class="text-right">Cost (₹)</th>
+                  <th class="text-left">Outcome</th>
+                  <th class="text-right">Value</th>
+                  <th class="text-left">Unit</th>
+                  <th class="text-right">ROI %</th>
+                  <th class="text-left">Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${tableRowsHtml}
+                <tr class="totals-row">
+                  <td class="text-left">Total</td>
+                  <td class="text-left">–</td>
+                  <td class="text-right">${formatCurrency(totalCost)}</td>
+                  <td class="text-left">–</td>
+                  <td class="text-right">–</td>
+                  <td class="text-left">–</td>
+                  <td class="text-right">–</td>
+                  <td class="text-left">–</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      `;
+    }
+
+    /* ==========================================================================
+       10. COPY SUMMARY GENERATOR (Implementation Notes: omit % from ITI & WA, add payroll)
+       ========================================================================== */
+    function generateCopySummaryText(targetWeek) {
+      if (!targetWeek) return '';
+
+      const weekLabel = formatWeekLabel(targetWeek);
+      const lines = [`Weekly Ops – ${weekLabel}`, ''];
+
+      // ITI Outreach (Raw numbers, omit %)
+      const itiRows = getStrictWeekRows('ITI', targetWeek);
+      if (itiRows.length > 0) {
+        let totalCols = 0, govtCols = 0, privCols = 0;
+        itiRows.forEach(r => {
+          const isGovt = !(r.college_type && String(r.college_type).toLowerCase().includes('priv'));
+          const c = parseNum(r.colleges_in_state) || 0;
+          totalCols += c;
+          if (isGovt) govtCols += c;
+          else privCols += c;
+        });
+
+        const emailSent = sumColumn(itiRows, 'email_sent');
+        const emailDelivered = sumColumn(itiRows, 'email_delivered');
+        const emailRead = sumColumn(itiRows, 'email_read');
+        const emailResponded = sumColumn(itiRows, 'email_responded');
+
+        const waSent = sumColumn(itiRows, 'wa_sent');
+        const waDelivered = sumColumn(itiRows, 'wa_delivered');
+        const waRead = sumColumn(itiRows, 'wa_read');
+        const waResponded = sumColumn(itiRows, 'wa_responded');
+
+        lines.push(`• ITI: ${formatIndianNumber(totalCols)} colleges approached (Govt: ${formatIndianNumber(govtCols)}, Private: ${formatIndianNumber(privCols)}), ${formatIndianNumber(emailSent)} emails sent (${formatIndianNumber(emailDelivered)} delivered, ${formatIndianNumber(emailRead)} read, ${formatIndianNumber(emailResponded)} responded), ${formatIndianNumber(waSent)} WhatsApp messages (${formatIndianNumber(waDelivered)} delivered, ${formatIndianNumber(waRead)} read, ${formatIndianNumber(waResponded)} responded)`);
+      }
+
+      // WA Campaigns (Omit %, include 1st Month Payroll)
+      const waRows = getStrictWeekRows('WA_CAMPAIGNS', targetWeek);
+      if (waRows.length > 0) {
+        const count = waRows.length;
+        const contacts = sumColumn(waRows, 'contacts');
+        const joined = sumColumn(waRows, 'joined');
+        const payroll = sumColumn(waRows, 'first_month_payroll');
+
+        lines.push(`• WA Campaigns: ${count} campaigns, ${formatIndianNumber(contacts)} contacts, ${formatIndianNumber(joined)} joined, ${formatCurrency(payroll)} 1st month payroll`);
+      }
+
+      // Community
+      const commRowsRaw = getStrictWeekRows('COMMUNITY', targetWeek);
+      const VALID_REGIONS = ['east', 'west', 'north', 'south', 'central'];
+      const commRows = commRowsRaw.filter(r => VALID_REGIONS.includes((r.region || '').toLowerCase().trim()));
+
+      if (commRows.length > 0) {
+        const membersAdded = sumColumn(commRows, 'members_added');
+        const membersTotal = getCommunityTotalMembers(commRows);
+        const jobsPosted = sumColumn(commRows, 'jobs_posted');
+
+        let fastestRegion = '–';
+        let maxAdded = -1;
+        commRows.forEach(r => {
+          const added = parseNum(r.members_added);
+          if (added !== null && added > maxAdded) {
+            maxAdded = added;
+            fastestRegion = r.region;
+          }
+        });
+
+        lines.push(`• Community: ${formatIndianNumber(membersAdded)} members added (total ${formatIndianNumber(membersTotal)}), ${formatIndianNumber(jobsPosted)} jobs posted. Fastest growing: ${fastestRegion}`);
+      }
+
+      // Meta / LinkedIn Ads (Include conversion rate)
+      const metaRows = getStrictWeekRows('META_ADS', targetWeek);
+      if (metaRows.length > 0) {
+        const spend = sumColumn(metaRows, 'spend');
+        const impressions = sumColumn(metaRows, 'impressions');
+        const calls = sumColumn(metaRows, 'calls');
+        const joined = sumColumn(metaRows, 'joined');
+        const convRate = formatPercent(joined, calls);
+
+        lines.push(`• LinkedIn / Meta Ads: ₹${formatIndianNumber(spend)} spent, ${formatIndianNumber(impressions)} impressions, ${formatIndianNumber(calls)} calls, ${formatIndianNumber(joined)} joined (${convRate} conversion)`);
+      }
+
+      // Social
+      const socialRows = getStrictWeekRows('SOCIAL', targetWeek);
+      if (socialRows.length > 0) {
+        const posts = sumColumn(socialRows, 'posts');
+        const impressions = sumColumn(socialRows, 'impressions');
+        const followersGained = sumColumn(socialRows, 'followers_gained');
+
+        lines.push(`• Social: ${formatIndianNumber(posts)} posts, ${formatIndianNumber(impressions)} impressions, ${formatIndianNumber(followersGained)} followers gained`);
+      }
+
+      // Other Activities
+      const otherRows = getStrictWeekRows('OTHER_ACTIVITIES', targetWeek);
+      if (otherRows.length > 0) {
+        const actCount = otherRows.length;
+        const totalReach = sumColumn(otherRows, 'reach');
+        const totalCost = sumColumn(otherRows, 'cost');
+
+        lines.push(`• Other Activities: ${actCount} activities run, ${formatIndianNumber(totalReach)} reach, ${formatCurrency(totalCost)} total cost`);
+      }
+
+      // Leads
+      const leadRows = getStrictWeekRows('LEADS', targetWeek);
+      if (leadRows.length > 0) {
+        const activeRows = leadRows.filter(r => (r.stage || '').toLowerCase().trim() !== 'dropped');
+        const activeCount = activeRows.length;
+        const pipelineRev = sumColumn(activeRows, 'expected_revenue') || 0;
+        const pipelineGP = sumColumn(activeRows, 'expected_gp') || 0;
+
+        const signedRows = leadRows.filter(r => (r.stage || '').toLowerCase().trim() === 'contract signed');
+        const signedRev = sumColumn(signedRows, 'expected_revenue') || 0;
+        const signedGP = sumColumn(signedRows, 'expected_gp') || 0;
+        const marginPct = signedRev > 0 ? ((signedGP / signedRev) * 100).toFixed(1) : '–';
+
+        lines.push(`• Leads: ${activeCount} active leads, pipeline ₹${formatIndianNumber(pipelineRev)} / GP ₹${formatIndianNumber(pipelineGP)}. Signed ₹${formatIndianNumber(signedRev)} / GP ₹${formatIndianNumber(signedGP)} (${marginPct}% margin)`);
+      }
+
+      // ROI Summary
+      const roiRows = getStrictWeekRows('ROI', targetWeek);
+      if (roiRows.length > 0) {
+        const totalCost = sumColumn(roiRows, 'cost');
+        const count = roiRows.length;
+        let bestRoiVal = -Infinity;
+        let bestRoiActivity = '';
+        let sumRoi = 0;
+        let countRoi = 0;
+
+        roiRows.forEach(r => {
+          const val = parseNum(r.roi_percent);
+          if (val !== null) {
+            sumRoi += val;
+            countRoi++;
+            if (val > bestRoiVal) {
+              bestRoiVal = val;
+              bestRoiActivity = r.activity || 'Activity';
+            }
+          }
+        });
+
+        const avgRoiStr = countRoi > 0 ? (sumRoi / countRoi).toFixed(1) + '%' : '–';
+        const bestRoiStr = countRoi > 0 ? `${bestRoiActivity} (${bestRoiVal}%)` : '–';
+
+        lines.push(`• ROI Summary: ${formatCurrency(totalCost)} spend across ${count} activities. Best ROI: ${bestRoiStr}, Avg ROI: ${avgRoiStr}`);
+      }
+
+      return lines.join('\n');
+    }
+
+    async function handleCopySummary() {
+      if (!state.selectedWeek) return;
+      const text = generateCopySummaryText(state.selectedWeek);
+
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          const textArea = document.createElement('textarea');
+          textArea.value = text;
+          textArea.style.position = 'fixed';
+          textArea.style.left = '-9999px';
+          document.body.appendChild(textArea);
+          textArea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textArea);
+        }
+        showToast('Summary copied to clipboard!');
+      } catch (err) {
+        console.error('Failed to copy to clipboard:', err);
+        showToast('Failed to copy. Check permissions.');
+      }
+    }
+
+    function showToast(msg) {
+      const toastEl = document.getElementById('toast');
+      toastEl.textContent = msg;
+      toastEl.classList.add('show');
+      setTimeout(() => {
+        toastEl.classList.remove('show');
+      }, 2600);
+    }
+
+    /* ==========================================================================
+       11. MAIN DASHBOARD RENDERER
+       Rebuilds main content area on week change or data reload.
+       ========================================================================== */
+    function renderDashboard() {
+      const container = document.getElementById('dashboard-content');
+      if (!container) return;
+
+      if (!state.selectedWeek || state.weeks.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state-box" style="padding: 60px 20px;">
+            <h3>No Operations Data Found</h3>
+            <p style="margin-top: 8px;">Please check the CSV_SOURCES URLs or click Refresh.</p>
+          </div>
+        `;
+        return;
+      }
+
+      const week = state.selectedWeek;
+      const htmlParts = [
+        renderHighlightsSection(week),
+        renderTopSummaryTiles(week),
+        renderITISection(week),
+        renderWACampaignsSection(week),
+        renderCommunitySection(week),
+        renderMetaAdsSection(week),
+        renderSocialSection(week),
+        renderOtherActivitiesSection(week),
+        renderLeadsSection(week),
+        renderROISection(week)
+      ];
+
+      container.innerHTML = htmlParts.join('\n');
+    }
+
+    /* ==========================================================================
+       12. THEME & INITIALIZATION EVENT LISTENERS
+       ========================================================================== */
+    function initTheme() {
+      const savedTheme = localStorage.getItem('agy_ops_theme') || 'auto';
+      applyTheme(savedTheme);
+
+      document.getElementById('btn-theme-toggle')?.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'auto';
+        let nextTheme = 'dark';
+        if (currentTheme === 'dark') nextTheme = 'light';
+        else if (currentTheme === 'light') nextTheme = 'auto';
+        else nextTheme = 'dark';
+
+        applyTheme(nextTheme);
+        localStorage.setItem('agy_ops_theme', nextTheme);
+      });
+    }
+
+    function applyTheme(theme) {
+      const labelEl = document.getElementById('theme-btn-label');
+      if (theme === 'auto') {
+        document.documentElement.removeAttribute('data-theme');
+        if (labelEl) labelEl.textContent = 'Auto';
+      } else {
+        document.documentElement.setAttribute('data-theme', theme);
+        if (labelEl) labelEl.textContent = theme.charAt(0).toUpperCase() + theme.slice(1);
+      }
+    }
+
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initTheme();
+
+      document.getElementById('btn-prev-week')?.addEventListener('click', () => navigateWeek(1));
+      document.getElementById('btn-next-week')?.addEventListener('click', () => navigateWeek(-1));
+      document.getElementById('btn-refresh')?.addEventListener('click', () => loadAllSheets());
+      document.getElementById('btn-copy-summary')?.addEventListener('click', handleCopySummary);
+
+      loadAllSheets();
+    });
+  </script>
+</body>
+</html>
