@@ -1808,7 +1808,7 @@
       // 5. Email Campaigns Run (distinct states in ITI with email_sent > 0)
       const emailCampaignsRun = getEmailCampaignsRun(itiRows);
 
-      // 6. LinkedIn Ad Spend (sum of spend in META_ADS)
+      // 6. Meta Ad Spend (sum of spend in META_ADS)
       const linkedInSpend = sumColumn(metaRows, 'spend');
 
       return {
@@ -1928,7 +1928,7 @@
 
           <div class="summary-tile">
             <div>
-              <div class="summary-tile-label">LinkedIn Ad Spend</div>
+              <div class="summary-tile-label">Meta Ad Spend</div>
               <div class="summary-tile-value">${formatCurrency(current.linkedInSpend)}</div>
             </div>
             <div class="summary-tile-trend">${spendBadge}</div>
